@@ -4,6 +4,7 @@ import { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
+  permission: [],
   name: '',
   avatar: ''
 }
@@ -38,19 +39,14 @@ const actions = {
 
   // get user info
   getInfo({ commit, state }) {
+
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
+        const permissions = response.result.data.roles.data[0].name === 'superadmin' ? ['superadmin'] : response.result.data.roles.data[0].permissions.data.map(item => item.name)
+        commit('SET_PERMISSIONS', permissions)
+        commit('SET_NAME', response.result.data.name)
+        commit('SET_AVATAR', '')
+        resolve(response)
       }).catch(error => {
         reject(error)
       })

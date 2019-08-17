@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 /* Layout */
-import Layout from '@/layout'
+import Layout from '@/layout/index'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -38,15 +38,27 @@ export const constantRoutes = [
   },
 
   {
+    path: '/',
+    component: () => import('@/home/index'),
+    redirect: '/backend/dashboard',
+    hidden: true
+  },
+
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
 
+  // 404 page must be placed at the end !!!
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const asyncRoutes = [
   {
-    path: '/',
+    path: '/backend',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/backend/dashboard',
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
@@ -157,6 +169,164 @@ export const constantRoutes = [
         meta: { title: 'External Link', icon: 'link' }
       }
     ]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/list',
+    name: 'normalUser',
+    meta: { title: '个人用户', icon: 'userlist' },
+    children: [
+      {
+        path: 'list',
+        name: 'personList',
+        component: () => import('@/views/normal-user/list/Index'),
+        meta: {
+          title: 'User Management'
+          // permissions: ['admin-list-all-article-category']
+        }
+      },
+      {
+        path: 'add',
+        name: 'userAdd',
+        component: () => import('@/views/normal-user/list/Add'),
+        meta: {
+          title: 'Add User'
+          // permissions: ['admin-list-all-article-category']
+        },
+        hidden: true
+      },
+      {
+        path: 'edit/:id',
+        name: 'userEdit',
+        component: () => import('@/views/normal-user/list/Edit'),
+        meta: {
+          title: 'Edit User Info'
+          // permissions: ['admin-list-all-article-category']
+        },
+        hidden: true
+      }
+    ]
+  },
+
+  {
+    path: '/article',
+    component: Layout,
+    redirect: '/article/list',
+    name: 'Article',
+    meta: { title: 'Posts', icon: 'news', permissions: ['admin-list-all-article-category'] },
+    children: [
+      {
+        path: 'list',
+        name: 'ArticleList',
+        component: () => import('@/views/article/list/index'),
+        meta: {
+          title: 'Posts',
+          permissions: ['admin-list-all-article']
+        }
+      },
+      {
+        path: '/article/list/create',
+        name: 'CreateArticle',
+        component: () => import('@/views/article/list/create'),
+        meta: {
+          title: 'Add Post',
+          permissions: ['admin-create-article']
+        },
+        hidden: true
+      },
+      {
+        path: '/article/list/edit/:id',
+        name: 'EditArticle',
+        component: () => import('@/views/article/list/edit'),
+        meta: {
+          title: 'Edit Post',
+          permissions: ['admin-update-article']
+        },
+        hidden: true
+      },
+      {
+        path: 'category',
+        name: 'ArticleCategory',
+        component: () => import('@/views/article/category/index'),
+        meta: {
+          title: 'Categories',
+          permissions: ['admin-list-all-article-category']
+        }
+      }
+    ]
+  },
+
+  {
+    path: '/admin-user',
+    component: Layout,
+    redirect: '/admin-user/role',
+    name: 'AdminUser',
+    meta: { title: 'Admin User', icon: 'administrator', permissions: ['admin-create-role'] },
+    children: [
+      {
+        path: 'role',
+        name: 'Role',
+        component: () => import('@/views/admin-user/role/index'),
+        meta: {
+          title: 'Roles',
+          permissions: ['admin-create-role']
+        }
+      },
+      {
+        path: '/admin-user/role/create',
+        name: 'CreateRole',
+        component: () => import('@/views/admin-user/role/create'),
+        meta: {
+          title: 'Add Role',
+          permissions: ['admin-create-role']
+        },
+        hidden: true
+      },
+      {
+        path: '/admin-user/role/edit/:id',
+        name: 'EditRole',
+        component: () => import('@/views/admin-user/role/edit'),
+        meta: {
+          title: 'Edit Role',
+          permissions: ['admin-create-role']
+        },
+        hidden: true
+      },
+      {
+        path: '/admin-users',
+        name: 'AdminUser',
+        component: () => import('@/views/admin-user/user/index'),
+        meta: { title: 'Admin Users' }
+      },
+      {
+        path: '/admin-users/user/create',
+        name: 'CreateUser',
+        component: () => import('@/views/admin-user/user/userAdd'),
+        meta: {
+          title: '添加角色',
+          permissions: ['admin-create-role']
+        },
+        hidden: true
+      },
+      {
+        path: '/admin-users/user/edit/:id',
+        name: 'EditUser',
+        component: () => import('@/views/admin-user/user/userEdit'),
+        meta: {
+          title: 'Edit Role',
+          permissions: ['admin-create-role']
+        },
+        hidden: true
+      }
+    ]
+  },
+
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
   },
 
   // 404 page must be placed at the end !!!

@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">Hokhyk Blog System</h3>
       </div>
 
       <el-form-item prop="username">
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
 
 export default {
   name: 'Login',
@@ -78,12 +78,15 @@ export default {
         password: '111111'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        username: [{ required: true, trigger: 'blur', message: 'Name can not be empty!' }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
-      loading: false,
       passwordType: 'password',
-      redirect: undefined
+      capsTooltip: false,
+      loading: false,
+      showDialog: false,
+      redirect: undefined,
+      otherQuery: {}
     }
   },
   watch: {
@@ -110,7 +113,7 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+            this.$router.push({ path: this.redirect || '/backend' })
             this.loading = false
           }).catch(() => {
             this.loading = false
