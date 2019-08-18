@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Blog;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Controllers\Controller as BaseController;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\CategoryCreateRequest;
@@ -17,7 +18,7 @@ use App\Validators\Blog\CategoryValidator;
  *
  * @package namespace App\Http\Controllers\Blog;
  */
-class CategoriesController extends Controller
+class CategoriesController extends BaseController
 {
     /**
      * @var CategoryRepository

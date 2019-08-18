@@ -129,7 +129,6 @@ class ArticleTest extends TestCase
         //Create a blog Article
         $article = factory(Article::class)->create();
 
-
         //Action
         //Visit a route to the article   https://stackoverflow.com/questions/42657551/match-jsonstructure-in-phpunit-test-laravel-5-4
         $response = $this->json('GET', "/api/articles/{$article->_id}")
