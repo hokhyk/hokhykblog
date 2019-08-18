@@ -13,7 +13,7 @@ use App\Http\Requests\Blog\ArticleUpdateRequest;
 use App\Repositories\Eloquent\Blog\ArticleRepositoryEloquent as ArticleRepository;
 use App\Validators\Blog\ArticleValidator;
 use Illuminate\Http\Response;
-
+use Exception;
 
 /**
  * Class CategoriesController.
@@ -157,8 +157,9 @@ class ArticlesController extends BaseController
             $Article = $this->repository->update($request->all(), $id);
 
             $response = [
+                'code' => Response::HTTP_OK,
                 'message' => 'Article updated.',
-                'data'    => $Article->toArray(),
+                'result'    => $Article->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -166,7 +167,8 @@ class ArticlesController extends BaseController
                 return response()->json($response);
             }
 
-            return redirect()->back()->with('message', $response['message']);
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
+
         } catch (ValidatorException $e) {
 
             if ($request->wantsJson()) {
@@ -191,14 +193,19 @@ class ArticlesController extends BaseController
      */
     public function destroy($id)
     {
-        if($this->repository->find($id)) {
+        try {
             $deleted = $this->repository->delete($id);
 
             if (request()->wantsJson()) {
 
                 return response()->json(['code' => Response::HTTP_OK, 'message' => 'Article is deleted.', 'deleted' => $deleted]);
             }
+
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
+
+        } catch (Exception $exception) {
+
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'Not an article found.']);
         }
-        return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'Not an article found.']);
     }
 }

@@ -31,11 +31,25 @@ class ArticleTest extends TestCase
         $article = factory(Article::class)->create();
 
         //Action
-        $response = $this->json('DELETE', "/api/articles/{$article->_id}")->dump()
+        $response = $this->json('DELETE', "/api/articles/{$article->_id}")
             ->assertJson(['code' => 200, 'message' => 'Article is deleted.']);
 
         //assert database record is deleted.
         $this->assertDatabaseMissing('articles', json_decode(json_encode($article), true));
+    }
+
+    /**
+     * @group canNotDestroyEmpty
+     */
+    public function testCanNotDestroyEmptyArticle() {
+        //Arrangement
+        $this->withoutExceptionHandling();
+
+        $id = $this->faker->randomDigitNotNull();
+
+        //Action
+        $response = $this->json('DELETE', "/api/articles/{$id}")
+            ->assertJson(['code' => 417, 'message' => 'Not an article found.']);
     }
 
     /**
@@ -56,7 +70,7 @@ class ArticleTest extends TestCase
         $response = $this->json('PUT', "/api/articles/{$article->_id}", $data)
             ->assertStatus(200)
             ->assertJsonStructure(
-                ['_id', 'title', 'article_content', 'created_at', 'updated_at']
+                ['code', 'message', 'result' => ['_id', 'title', 'article_content', 'created_at', 'updated_at']]
             )
             ->assertJsonFragment($data);
 
