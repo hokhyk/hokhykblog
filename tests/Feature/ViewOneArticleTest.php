@@ -27,27 +27,25 @@ class ViewOneArticleTest extends TestCase
     public function testCanUpdateArticle() {
         //Arrangement
         $this->withoutExceptionHandling();
+        // $data to be submitted for update.
+        $data = [
+            'title' => $this->faker->title,
+            'article_content' => $this->faker->paragraph(2)
+        ];
 
         $article = factory(Article::class)->create();
-        $title = $this->faker->title;
-        $content = $this->faker->paragraph(10);
 
         //Action
-        $response = $this->json('PUT', "/api/articles/{$article->_id}", [$title, $content])
-            ->assertStatus(201)
+        $response = $this->json('PUT', "/api/articles/{$article->_id}", $data)
+            ->assertStatus(200)
             ->assertJsonStructure(
-                ['_id', 'title', 'content', 'created_at', 'updated_at']
+                ['_id', 'title', 'article_content', 'created_at', 'updated_at']
             )
-            ->assertJsonFragment([$title, $content])
-        ;
+            ->assertJsonFragment($data);
 
         //assert database record is updated
         $this->assertDatabaseHas('articles',
-            [
-                'title' => $article['title'],
-                'content' => $article['content']
-            ]
-        );
+            $data);
     }
 
 
@@ -83,7 +81,7 @@ class ViewOneArticleTest extends TestCase
         //Create a blog Article
         $article = [
             'title' => $this->faker->title,
-            'content' => $this->faker->paragraph(3)
+            'article_content' => $this->faker->paragraph(3)
         ];
 
         //Action
@@ -92,14 +90,14 @@ class ViewOneArticleTest extends TestCase
             ->assertStatus(201)
             ->assertJson(json_decode(json_encode($article), true))
             ->assertJsonStructure(
-                ['_id', 'title', 'content', 'created_at', 'updated_at']
+                ['_id', 'title', 'article_content', 'created_at', 'updated_at']
             );
 
         //assert database records
         $this->assertDatabaseHas('articles',
             [
                 'title' => $article['title'],
-                'content' => $article['content']
+                'article_content' => $article['article_content']
             ]
         );
     }
@@ -121,7 +119,7 @@ class ViewOneArticleTest extends TestCase
             ->assertStatus(200)
             ->assertJson(json_decode(json_encode($article), true))
             ->assertJsonStructure(
-                ['_id', 'title', 'content', 'created_at', 'updated_at']
+                ['_id', 'title', 'article_content', 'created_at', 'updated_at']
             );
     }
 }
