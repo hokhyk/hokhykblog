@@ -22,6 +22,23 @@ class ViewOneArticleTest extends TestCase
     use withFaker;
 
     /**
+     * @group destroyArticle
+     */
+    public function testCanDestroyArticle() {
+        //Arrangement
+        $this->withoutExceptionHandling();
+
+        $article = factory(Article::class)->create();
+
+        //Action
+        $response = $this->json('DELETE', "/api/articles/{$article->_id}")
+            ->assertJson(['code' => 200, 'message' => 'Article is deleted.']);
+
+        //assert database record is deleted.
+        $this->assertDatabaseMissing('articles', json_decode(json_encode($article), true));
+    }
+
+    /**
      * @group updateArticle
      */
     public function testCanUpdateArticle() {
