@@ -63,20 +63,4 @@ class ArticlesController extends Controller
         return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'Not a Record found.']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        if(Article::where('_id', $id)->exists()) {
-            $article = Article::find($id);
-            $article->delete();
-
-            return response()->json(['code' => Response::HTTP_OK, 'message' => 'Article is deleted.']);
-        }
-        return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'Not an article found.']);
-    }
 }

@@ -8,10 +8,12 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller as BaseController;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\ArticleCreateRequest;
-use App\Http\Requests\ArticleUpdateRequest;
+use App\Http\Requests\Blog\ArticleCreateRequest;
+use App\Http\Requests\Blog\ArticleUpdateRequest;
 use App\Repositories\Eloquent\Blog\ArticleRepositoryEloquent as ArticleRepository;
 use App\Validators\Blog\ArticleValidator;
+use Illuminate\Http\Response;
+
 
 /**
  * Class CategoriesController.
@@ -189,16 +191,14 @@ class ArticlesController extends BaseController
      */
     public function destroy($id)
     {
-        $deleted = $this->repository->delete($id);
+        if($this->repository->find($id)) {
+            $deleted = $this->repository->delete($id);
 
-        if (request()->wantsJson()) {
+            if (request()->wantsJson()) {
 
-            return response()->json([
-                'message' => 'Article deleted.',
-                'deleted' => $deleted,
-            ]);
+                return response()->json(['code' => Response::HTTP_OK, 'message' => 'Article is deleted.', 'deleted' => $deleted]);
+            }
         }
-
-        return redirect()->back()->with('message', 'Article deleted.');
+        return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'Not an article found.']);
     }
 }

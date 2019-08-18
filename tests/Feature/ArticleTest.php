@@ -18,7 +18,7 @@ class ArticleTest extends TestCase
 //           https://github.com/jenssegers/laravel-mongodb/issues/1475
 //           https://stackoverflow.com/questions/49320912/laravel-5-6-unit-test-call-to-a-member-function-begintransaction-on-null
 
-    use DatabaseMigrations;
+//    use DatabaseMigrations;
     use withFaker;
 
     /**
@@ -31,7 +31,7 @@ class ArticleTest extends TestCase
         $article = factory(Article::class)->create();
 
         //Action
-        $response = $this->json('DELETE', "/api/articles/{$article->_id}")
+        $response = $this->json('DELETE', "/api/articles/{$article->_id}")->dump()
             ->assertJson(['code' => 200, 'message' => 'Article is deleted.']);
 
         //assert database record is deleted.

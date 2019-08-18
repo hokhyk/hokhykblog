@@ -17,13 +17,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/articles', 'ArticlesController@store')->name('storeArticle');
+Route::group(['namespace' => 'Blog'], function() {
 
-Route::get('/articles/{id}', 'ArticlesController@show')->name('showArticle');
+    Route::get('/articles', 'ArticlesController@index')->name('showArticle');
 
-Route::get('/articles', 'ArticlesController@index')->name('showArticle');
+    Route::get('/articles/{id}', 'ArticlesController@show')->name('showArticle');
 
-Route::put('/articles/{id}', 'ArticlesController@update')->name('updateArticle');
+    Route::post('/articles', 'ArticlesController@store')->name('storeArticle');
 
-Route::delete('/articles/{id}', 'ArticlesController@destroy')->name('deleteArticle');
+    Route::put('/articles/{id}', 'ArticlesController@update')->name('updateArticle');
+
+    Route::delete('/articles/{id}', 'ArticlesController@destroy')->name('deleteArticle');
+});
+
 
