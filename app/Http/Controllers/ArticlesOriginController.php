@@ -31,36 +31,4 @@ class ArticlesController extends Controller
         $article = $request->all();
         return Article::create($article);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return  Article::find($id);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        if(Article::where('_id', $id)->exists()) {
-            $article = Article::find($id);
-            $article->title = is_null($request->title) ? $article->title : $request->title;
-            $article->article_content = is_null($request->article_content) ? $article->article_content : $request->article_content;
-            $article->save();
-//            return $article;
-            return Article::find($id);
-        }
-        return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'Not a Record found.']);
-    }
-
 }

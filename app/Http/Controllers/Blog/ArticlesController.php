@@ -51,16 +51,21 @@ class ArticlesController extends BaseController
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $categories = $this->repository->all();
+        $Articles = $this->repository->all();
+//        $articles = $this->repository->paginate($limit = null, $columns = ['*']);
+
+        $response = [
+            'code' => Response::HTTP_OK,
+            'message' => 'Articles retrived.',
+            'result'    => $Articles->toArray(),
+        ];
 
         if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $categories,
-            ]);
+            return response()->json($response);
         }
 
-        return view('categories.index', compact('categories'));
+        return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
     }
 
     /**
@@ -81,8 +86,9 @@ class ArticlesController extends BaseController
             $Article = $this->repository->create($request->all());
 
             $response = [
+                'code' => Response::HTTP_CREATED,
                 'message' => 'Article created.',
-                'data'    => $Article->toArray(),
+                'result'    => $Article->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -90,7 +96,8 @@ class ArticlesController extends BaseController
                 return response()->json($response);
             }
 
-            return redirect()->back()->with('message', $response['message']);
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
+
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
@@ -112,17 +119,37 @@ class ArticlesController extends BaseController
      */
     public function show($id)
     {
-        $Article = $this->repository->find($id);
+        try {
 
-        if (request()->wantsJson()) {
+            $Article = $this->repository->find($id);
 
-            return response()->json([
-                'data' => $Article,
-            ]);
+            $response = [
+                'code'    => Response::HTTP_OK,
+                'message' => 'Article found.',
+                'result'  => $Article->toArray(),
+            ];
+
+            if (request()->wantsJson()) {
+
+                return response()->json($response);
+            }
+
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
+
+        } catch (ValidatorException $e) {
+
+            if (request()->wantsJson()) {
+
+                return response()->json([
+                    'error'   => true,
+                    'message' => $e->getMessageBag()
+                ]);
+            }
+
+            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
         }
-
-        return view('categories.show', compact('Article'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
