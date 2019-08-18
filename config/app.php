@@ -162,6 +162,7 @@ return [
 
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Jenssegers\Mongodb\MongodbServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
     ],
 

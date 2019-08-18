@@ -1,0 +1,127 @@
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+//use Illuminate\Foundation\Testing\RefreshDatabase;  //problematic under jenssegers/laravel-mongodb driver.
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Entities\Blog\Article;
+
+/**
+ * Class ViewOneArticleTest
+ * @package Tests\Feature
+ */
+class ViewOneArticleTest extends TestCase
+{
+//    use RefreshDatabase;  //A workaround for working with mongodb :
+//           https://github.com/jenssegers/laravel-mongodb/issues/1475
+//           https://stackoverflow.com/questions/49320912/laravel-5-6-unit-test-call-to-a-member-function-begintransaction-on-null
+
+    use DatabaseMigrations;
+    use withFaker;
+
+    /**
+     * @group updateArticle
+     */
+    public function testCanUpdateArticle() {
+        //Arrangement
+        $this->withoutExceptionHandling();
+
+        $article = factory(Article::class)->create();
+        $title = $this->faker->title;
+        $content = $this->faker->paragraph(10);
+
+        //Action
+        $response = $this->json('PUT', "/api/articles/{$article->_id}", [$title, $content])
+            ->assertStatus(201)
+            ->assertJsonStructure(
+                ['_id', 'title', 'content', 'created_at', 'updated_at']
+            )
+            ->assertJsonFragment([$title, $content])
+        ;
+
+        //assert database record is updated
+        $this->assertDatabaseHas('articles',
+            [
+                'title' => $article['title'],
+                'content' => $article['content']
+            ]
+        );
+    }
+
+
+    /**
+     * @group viewAllArticles
+     */
+    public function testCanViewAllArticles() {
+        //Arrangement
+        $this->withoutExceptionHandling();
+
+        $article1 = factory(Article::class)->create();
+        $article2 = factory(Article::class)->create();
+
+        //Action
+        $response = $this->json('GET', "/api/articles")
+            ->assertStatus(200)
+            ->assertJson(
+                [
+                    '0' => json_decode(json_encode($article1), true),
+                    '1' => json_decode(json_encode($article2), true)
+                ]
+            );
+    }
+
+
+    /**
+     * @group storeArticle
+     */
+    public function testCanStoreOneArticle() {
+        //Arrangement
+        $this->withoutExceptionHandling();
+
+        //Create a blog Article
+        $article = [
+            'title' => $this->faker->title,
+            'content' => $this->faker->paragraph(3)
+        ];
+
+        //Action
+        //Visit a route to create the article
+        $response = $this->postJson("/api/articles", $article)
+            ->assertStatus(201)
+            ->assertJson(json_decode(json_encode($article), true))
+            ->assertJsonStructure(
+                ['_id', 'title', 'content', 'created_at', 'updated_at']
+            );
+
+        //assert database records
+        $this->assertDatabaseHas('articles',
+            [
+                'title' => $article['title'],
+                'content' => $article['content']
+            ]
+        );
+    }
+
+
+    /**
+     * @group viewArticle
+     */
+    public function testCanViewOneArticle() {
+        //Arrangement
+        $this->withoutExceptionHandling();
+        //Create a blog Article
+        $article = factory(Article::class)->create();
+
+
+        //Action
+        //Visit a route to the article   https://stackoverflow.com/questions/42657551/match-jsonstructure-in-phpunit-test-laravel-5-4
+        $response = $this->json('GET', "/api/articles/{$article->_id}")
+            ->assertStatus(200)
+            ->assertJson(json_decode(json_encode($article), true))
+            ->assertJsonStructure(
+                ['_id', 'title', 'content', 'created_at', 'updated_at']
+            );
+    }
+}
