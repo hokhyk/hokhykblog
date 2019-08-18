@@ -12,7 +12,7 @@ use App\Entities\Blog\Article;
  * Class ViewOneArticleTest
  * @package Tests\Feature
  */
-class ViewOneArticleTest extends TestCase
+class ArticleTest extends TestCase
 {
 //    use RefreshDatabase;  //A workaround for working with mongodb :
 //           https://github.com/jenssegers/laravel-mongodb/issues/1475

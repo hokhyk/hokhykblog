@@ -161,8 +161,9 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
-        DesignMyNight\Mongodb\MongodbPassportServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
         Jenssegers\Mongodb\MongodbServiceProvider::class,
+        DesignMyNight\Mongodb\MongodbPassportServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
     ],
