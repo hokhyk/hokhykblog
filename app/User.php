@@ -3,7 +3,8 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Jenssegers\Mongodb\Auth\User as Authenticatable;
+//use Jenssegers\Mongodb\Auth\User as Authenticatable;
+use DesignMyNight\Mongodb\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
