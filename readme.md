@@ -6,5 +6,4 @@
    - user's data in mongodb(latest version as for 2019-08) as well 
    - restful API interfaces
    - separate deployment from frontend
-   - frontend source under same root folder: frontend
    
