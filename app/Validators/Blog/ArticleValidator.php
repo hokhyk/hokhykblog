@@ -18,7 +18,17 @@ class ArticleValidator extends LaravelValidator
      * @var array
      */
     protected $rules = [
-        ValidatorInterface::RULE_CREATE => [],
-        ValidatorInterface::RULE_UPDATE => [],
+        ValidatorInterface::RULE_CREATE => [
+            'title' => 'required|max:255',
+//            'author'=> 'required',
+        ],
+        ValidatorInterface::RULE_UPDATE => [
+            'title' => 'required|max:255',
+        ],
+    ];
+
+    protected $messages = [
+        'title.required' => 'Article title should not be empty.',
+        'title.max' => 'Article title is too long(255 characters at most.',
     ];
 }

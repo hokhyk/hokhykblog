@@ -93,7 +93,7 @@ class ArticlesController extends BaseController
 
             if ($request->wantsJson()) {
 
-                return response()->json($response);
+                return response()->json($response, Response::HTTP_CREATED );
             }
 
             return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
@@ -101,12 +101,13 @@ class ArticlesController extends BaseController
         } catch (ValidatorException $e) {
             if ($request->wantsJson()) {
                 return response()->json([
+                    'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                     'error'   => true,
                     'message' => $e->getMessageBag()
-                ]);
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
         }
     }
 
@@ -138,31 +139,16 @@ class ArticlesController extends BaseController
 
         } catch (ValidatorException $e) {
 
-            if (request()->wantsJson()) {
-
+            if ($request->wantsJson()) {
                 return response()->json([
+                    'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                     'error'   => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
 
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
         }
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $Article = $this->repository->find($id);
-
-        return view('categories.edit', compact('Article'));
     }
 
     /**
@@ -199,14 +185,14 @@ class ArticlesController extends BaseController
         } catch (ValidatorException $e) {
 
             if ($request->wantsJson()) {
-
                 return response()->json([
+                    'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
                     'error'   => true,
                     'message' => $e->getMessageBag()
                 ]);
             }
 
-            return redirect()->back()->withErrors($e->getMessageBag())->withInput();
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
         }
     }
 

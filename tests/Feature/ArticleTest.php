@@ -128,7 +128,7 @@ class ArticleTest extends TestCase
         //Action
         $response = $this->json('POST', "/api/articles", $article)
 //            ->assertStatus(201)  //
-            ->assertStatus(200)
+            ->assertStatus(201)
             ->assertJsonStructure(
                 ['code', 'message', 'result' =>
                     ['_id', 'title', 'article_content', 'created_at', 'updated_at']
@@ -143,6 +143,65 @@ class ArticleTest extends TestCase
                 'article_content' => $article['article_content']
             ]
         );
+    }
+
+
+    /**
+     * @group validateArticleTitle
+     */
+    public function testInvalidArticleTitle() {
+        //Arrangement
+        $this->withoutExceptionHandling();
+
+        $article = [
+            'title' => null,
+            'article_content' => $this->faker->paragraph(3)
+        ];
+
+        //Action
+        $response = $this->json('POST', "/api/articles", $article)
+            ->assertStatus(422)
+            ->assertJsonStructure(
+                ['code', 'error', 'message']
+            )
+            ->assertjson([
+                'code' => 422, 'error' => true,
+                    'message' => [
+                        'title' => [
+                            'Article title should not be empty.',
+                        ]
+                    ]
+                ]
+            );
+    }
+
+    /**
+     * @group validateArticleTitleLength
+     */
+    public function testInvalidArticleTitleLength() {
+        //Arrangement
+        $this->withoutExceptionHandling();
+
+        $article = [
+            'title' => $this->faker->slug(256),
+            'article_content' => $this->faker->paragraph(3)
+        ];
+
+        //Action
+        $response = $this->json('POST', "/api/articles", $article)
+            ->assertStatus(422)
+            ->assertJsonStructure(
+                ['code', 'error', 'message']
+            )
+            ->assertjson([
+                    'code' => 422, 'error' => true,
+                    'message' => [
+                        'title' => [
+                            'Article title is too long(255 characters at most.',
+                        ]
+                    ]
+                ]
+            );
     }
 
 

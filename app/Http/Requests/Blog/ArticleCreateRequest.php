@@ -24,7 +24,7 @@ class ArticleCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+           //
         ];
     }
 }
