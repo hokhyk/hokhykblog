@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Blog'], function() {
 
-    Route::get('/articles', 'ArticlesController@index')->name('showArticle');
+    Route::get('/articles', 'ArticlesController@index')->name('showArticles');
 
     Route::get('/articles/{id}', 'ArticlesController@show')->name('showArticle');
 
@@ -28,6 +28,14 @@ Route::group(['namespace' => 'Blog'], function() {
     Route::put('/articles/{id}', 'ArticlesController@update')->name('updateArticle');
 
     Route::delete('/articles/{id}', 'ArticlesController@destroy')->name('deleteArticle');
+});
+
+
+Route::group(['namespace' => 'User'], function() {
+
+    Route::get('/users/{id}', 'UsersController@show')->name('showUser');
+
+    Route::put('/users/{id}', 'UsersController@update')->name('updateUser');
 });
 
 

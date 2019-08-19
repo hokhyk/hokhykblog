@@ -14,9 +14,6 @@ use App\Entities\Blog\Article;
  */
 class ArticleTest extends TestCase
 {
-//    use RefreshDatabase;  //A workaround for working with mongodb :
-//           https://github.com/jenssegers/laravel-mongodb/issues/1475
-//           https://stackoverflow.com/questions/49320912/laravel-5-6-unit-test-call-to-a-member-function-begintransaction-on-null
 
 //    use DatabaseMigrations;
     use withFaker;
@@ -127,7 +124,6 @@ class ArticleTest extends TestCase
 
         //Action
         $response = $this->json('POST', "/api/articles", $article)
-//            ->assertStatus(201)  //
             ->assertStatus(201)
             ->assertJsonStructure(
                 ['code', 'message', 'result' =>

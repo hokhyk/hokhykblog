@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Blog;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 
@@ -8,37 +8,38 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller as BaseController;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
-use App\Http\Requests\Blog\ArticleCreateRequest;
-use App\Http\Requests\Blog\ArticleUpdateRequest;
-use App\Repositories\Eloquent\Blog\ArticleRepositoryEloquent as ArticleRepository;
-use App\Validators\Blog\ArticleValidator;
+use App\Http\Requests\User\UserCreateRequest;
+use App\Http\Requests\User\UserUpdateRequest;
+use App\Validators\User\UserValidator;
 use Illuminate\Http\Response;
 use Exception;
+use App\Repositories\Eloquent\User\UserRepositoryEloquent as UserRepository;
+
 
 /**
- * Class CategoriesController.
+ * Class ManageUsersController.
  *
- * @package namespace App\Http\Controllers\Blog;
+ * @package namespace App\Http\Controllers\User;
  */
-class ArticlesController extends BaseController
+class ManageUsersController extends BaseController
 {
     /**
-     * @var ArticleRepository
+     * @var UserRepository
      */
     protected $repository;
 
     /**
-     * @var ArticleValidator
+     * @var UserValidator
      */
     protected $validator;
 
     /**
-     * ArticlesController constructor.
+     * ManageUsersController constructor.
      *
-     * @param ArticleRepository $repository
-     * @param ArticleValidator $validator
+     * @param UserRepository $repository
+     * @param UserValidator $validator
      */
-    public function __construct(ArticleRepository $repository, ArticleValidator $validator)
+    public function __construct(UserRepository $repository, UserValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
@@ -51,13 +52,13 @@ class ArticlesController extends BaseController
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $Articles = $this->repository->all();
-//        $articles = $this->repository->paginate($limit = null, $columns = ['*']);
+        $users = $this->repository->all();
+//        $users = $this->repository->paginate($limit = null, $columns = ['*']);
 
         $response = [
             'code' => Response::HTTP_OK,
-            'message' => 'Articles retrived.',
-            'result'    => $Articles,
+            'message' => 'Users retrived.',
+            'result'    => $users,
         ];
 
         if (request()->wantsJson()) {
@@ -71,24 +72,24 @@ class ArticlesController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ArticleCreateRequest $request
+     * @param  UserCreateRequest $request
      *
      * @return \Illuminate\Http\Response
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function store(ArticleCreateRequest $request)
+    public function store(UserCreateRequest $request)
     {
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $Article = $this->repository->create($request->all());
+            $user = $this->repository->create($request->all());
 
             $response = [
                 'code' => Response::HTTP_CREATED,
-                'message' => 'Article created.',
-                'result'    => $Article,
+                'message' => 'User created.',
+                'result'    => $user,
             ];
 
             if ($request->wantsJson()) {
@@ -122,12 +123,12 @@ class ArticlesController extends BaseController
     {
         try {
 
-            $Article = $this->repository->find($id);
+            $user = $this->repository->find($id);
 
             $response = [
                 'code'    => Response::HTTP_OK,
-                'message' => 'Article found.',
-                'result'  => $Article->toArray(),
+                'message' => 'User found.',
+                'result'  => $user,
             ];
 
             if (request()->wantsJson()) {
@@ -154,25 +155,25 @@ class ArticlesController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  ArticleUpdateRequest $request
+     * @param  UserUpdateRequest $request
      * @param  string            $id
      *
      * @return Response
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update(ArticleUpdateRequest $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
         try {
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $Article = $this->repository->update($request->all(), $id);
+            $user = $this->repository->update($request->all(), $id);
 
             $response = [
                 'code' => Response::HTTP_OK,
-                'message' => 'Article updated.',
-                'result'    => $Article->toArray(),
+                'message' => 'User updated.',
+                'result'    => $user->toArray(),
             ];
 
             if ($request->wantsJson()) {
@@ -211,14 +212,14 @@ class ArticlesController extends BaseController
 
             if (request()->wantsJson()) {
 
-                return response()->json(['code' => Response::HTTP_OK, 'message' => 'Article is deleted.', 'deleted' => $deleted]);
+                return response()->json(['code' => Response::HTTP_OK, 'message' => 'User is deleted.', 'deleted' => $deleted]);
             }
 
             return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
 
         } catch (Exception $exception) {
 
-            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'Not an article found.']);
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'Not an user found.']);
         }
     }
 }
