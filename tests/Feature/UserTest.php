@@ -27,24 +27,36 @@ class UserTest extends TestCase
         $this->withoutExceptionHandling();
         // $data to be submitted for update.
         $data = [
+
+            //TODO: Normally name should not be changed, only nick name.
             'name' => $this->faker->name,
+
+            //TODO: Normally for common user to change email it won't be one step.
             'email' => $this->faker->unique()->safeEmail,
+
+            //TODO: Normally for common user to change phone number, old phone number will be needed for verification.
+            // And a verification text code will sent to user by phone or email and cached for verificatioin. it won't be one step.
             'phone' => $this->faker->unique()->phoneNumber,
+
+            //TODO: Normally for common user to change password, old password will be needed for verification.
+            // And a verification text code will sent to user by phone or email and cached for verificatioin. it won't be one step.
             'password' => $this->faker->password(),
         ];
+
+        $userReturned = Arr::except($data, ['password']);
 
         $User = factory(User::class)->create();
 
         //Action
-        $response = $this->json('PUT', "/api/Users/{$User->_id}", $data)
+        $response = $this->json('PUT', "/api/users/{$User->_id}", $data)
             ->assertStatus(200)
             ->assertJsonStructure(
-                ['code', 'message', 'result' => ['_id', 'title', 'User_content', 'created_at', 'updated_at']]
+                ['code', 'message', 'result' => ['_id', 'name', 'email', 'phone', 'created_at', 'updated_at']]
             )
-            ->assertJsonFragment($data);
+            ->assertJsonFragment($userReturned);
 
         //assert database record is updated
-        $this->assertDatabaseHas('Users',
+        $this->assertDatabaseHas('users',
             $data);
     }
 

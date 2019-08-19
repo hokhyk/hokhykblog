@@ -33,7 +33,7 @@ class ManageUserTest extends TestCase
             ->assertJson(['code' => 200, 'message' => 'User is deleted.']);
 
         //assert database record is deleted.
-        $this->assertDatabaseMissing('Users', json_decode(json_encode($user), true));
+        $this->assertDatabaseMissing('users', json_decode(json_encode($user), true));
     }
 
     /**
@@ -48,11 +48,11 @@ class ManageUserTest extends TestCase
 
         //Action
         $response = $this->json('DELETE', "/api/admin/manageusers/{$id}")
-            ->assertJson(['code' => 417, 'message' => 'Not an User found.']);
+            ->assertJson(['code' => 417, 'message' => 'Not an user found.']);
     }
 
     /**
-     * @group updateUser
+     * @group updateUserAdmin
      */
     public function testCanUpdateUser()
     {
@@ -66,18 +66,20 @@ class ManageUserTest extends TestCase
             'password' => $this->faker->password(),
         ];
 
+        $userReturned = Arr::except($data, ['password']);
+
         $User = factory(User::class)->create();
 
         //Action
         $response = $this->json('PUT', "/api/admin/manageusers/{$User->_id}", $data)
             ->assertStatus(200)
             ->assertJsonStructure(
-                ['code', 'message', 'result' => ['_id', 'title', 'User_content', 'created_at', 'updated_at']]
+                ['code', 'message', 'result' => ['_id', 'name', 'email', 'phone', 'created_at', 'updated_at']]
             )
-            ->assertJsonFragment($data);
+            ->assertJsonFragment($userReturned);
 
         //assert database record is updated
-        $this->assertDatabaseHas('Users',
+        $this->assertDatabaseHas('users',
             $data);
     }
 
