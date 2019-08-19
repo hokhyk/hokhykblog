@@ -14,7 +14,8 @@ class AdministratorTableSeeder extends Seeder
     {
         factory(AdminUser::class)->create(
             [
-                'name' => 'admin',
+                '_id' => 1,
+                'name' => 'superadmin',
                 'email' => 'admin@admin.org',
                 'phone' => '006421000001',
                 'password' => '123456',

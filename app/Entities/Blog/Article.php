@@ -20,15 +20,17 @@ class Article extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'article_content'];
+    protected $fillable = ['title', 'article_content', 'user_id'];
 
     protected $dates = [];
 
     public $timestamps = false;
 
-    protected $casts = [
-        'user_id' => 'string',
-    ];
+//    protected $casts = [
+//        'user_id' => 'string',
+//    ];
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

@@ -14,12 +14,13 @@ class ArticlesTableSeeder extends Seeder
      */
     public function run()
     {
+        factory(Article::class, 5)->create();
 //        factory(Article::class, 5)->create()->each(
 //            function($article){
 //                $article->user()->save(factory(User::class)->make());
 //                $article->user()->create([factory(User::class)->make()]);
 //            }
 //        );
-        DB::insert();
+//        DB::insert();
     }
 }

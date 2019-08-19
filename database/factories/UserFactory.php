@@ -21,6 +21,5 @@ $factory->define(App\Entities\User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'phone' => $faker->unique()->phoneNumber,
         'password' => Hash::make($faker->password()),
-
     ];
 });
