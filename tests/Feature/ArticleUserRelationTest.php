@@ -90,7 +90,7 @@ class ArticleUserRelationTest extends TestCase
         ];
 
         //Action
-        $response = $this->json('GET', "/api/articles/{$article->_id}")->dump()
+        $response = $this->json('GET', "/api/articles/{$article->_id}")
             ->assertStatus(200)
             ->assertJsonFragment(json_decode(json_encode($returnedArticle), true))
             ->assertJsonStructure(
