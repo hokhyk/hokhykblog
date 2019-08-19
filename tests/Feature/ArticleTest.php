@@ -120,21 +120,21 @@ class ArticleTest extends TestCase
         //Arrangement
         $this->withoutExceptionHandling();
 
-        //Create a blog Article
         $article = [
             'title' => $this->faker->title,
             'article_content' => $this->faker->paragraph(3)
         ];
 
         //Action
-        //Visit a route to create the article
-//        $response = $this->postJson("/api/articles", $article)
         $response = $this->json('POST', "/api/articles", $article)
-            ->assertStatus(201)
-            ->assertJson(json_decode(json_encode($article), true))
+//            ->assertStatus(201)  //
+            ->assertStatus(200)
             ->assertJsonStructure(
-                ['_id', 'title', 'article_content', 'created_at', 'updated_at']
-            );
+                ['code', 'message', 'result' =>
+                    ['_id', 'title', 'article_content', 'created_at', 'updated_at']
+                ]
+            )
+            ->assertJsonFragment($article);
 
         //assert database records
         $this->assertDatabaseHas('articles',
@@ -156,7 +156,6 @@ class ArticleTest extends TestCase
         $article = factory(Article::class)->create();
 
         //Action
-        //Visit a route to the article   https://stackoverflow.com/questions/42657551/match-jsonstructure-in-phpunit-test-laravel-5-4
         $response = $this->json('GET', "/api/articles/{$article->_id}")
             ->assertStatus(200)
             ->assertJsonFragment(json_decode(json_encode($article), true))

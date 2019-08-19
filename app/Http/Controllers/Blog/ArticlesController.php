@@ -88,7 +88,7 @@ class ArticlesController extends BaseController
             $response = [
                 'code' => Response::HTTP_CREATED,
                 'message' => 'Article created.',
-                'result'    => $Article->toArray(),
+                'result'    => $Article,
             ];
 
             if ($request->wantsJson()) {
