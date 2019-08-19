@@ -27,6 +27,9 @@ Route::group(['namespace' => 'User'], function() {
     Route::get('/users/{id}', 'UsersController@show')->name('showUser');
 
     Route::put('/users/{id}', 'UsersController@update')->name('updateUser');
+
+    Route::get('/users/{id}/articles', 'UsersController@showArticles')->name('showUserArticles');
+
 });
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Resources\UsersResource;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -55,12 +56,12 @@ class UsersController extends BaseController
     {
         try {
 
-            $User = $this->repository->find($id);
+            $user = $this->repository->find($id);
 
             $response = [
                 'code'    => Response::HTTP_OK,
                 'message' => 'User found.',
-                'result'  => $User,
+                'result'  => new UserInfoResource($user),
             ];
 
             if (request()->wantsJson()) {
@@ -128,4 +129,39 @@ class UsersController extends BaseController
             return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
         }
     }
+
+
+    public function showArticles($id)
+    {
+        try {
+
+            $UserArticles = $this->repository->with('articles')->find($id);
+
+            $response = [
+                'code'    => Response::HTTP_OK,
+                'message' => 'User articles list found.',
+                'result'  => UsersResource::collection($User),
+            ];
+
+            if (request()->wantsJson()) {
+
+                return response()->json($response);
+            }
+
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
+
+        } catch (ValidatorException $e) {
+
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                    'error'   => true,
+                    'message' => $e->getMessageBag()
+                ]);
+            }
+
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
+        }
+    }
+
 }

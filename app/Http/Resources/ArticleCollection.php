@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ArticlesResource extends JsonResource
+class ArticleCollection extends ResourceCollection
 {
     /**
-     * Transform the resource into an array.
+     * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -21,6 +21,16 @@ class ArticlesResource extends JsonResource
             'created_at' => (string)$this->created_at,
             'updated_at' => (string)$this->updated_at,
             'user_info' => new UserInfoResource($this->whenLoaded('user'))
+        ];
+    }
+
+    //TODO: Pagination information to be added...
+    public function with($request)
+    {
+        return [
+            'links'    => [
+                'self' => url('api/articles/' . $this->id),
+            ],
         ];
     }
 }
