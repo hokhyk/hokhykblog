@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use DesignMyNight\Mongodb\Auth\User as Authenticatable;
@@ -9,6 +10,8 @@ use DesignMyNight\Mongodb\Auth\User as Authenticatable;
 class AdminUser extends Authenticatable
 {
     use SoftDeletes, Notifiable;
+
+    protected $dates = ['deleted_at', 'updated_at', 'created_at'];
 
     /**
      * The attributes that are mass assignable.

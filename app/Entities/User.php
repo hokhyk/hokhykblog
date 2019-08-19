@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use DesignMyNight\Mongodb\Auth\User as Authenticatable;
@@ -28,6 +29,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $dates = ['deleted_at', 'updated_at', 'created_at'];
+
 
     public function findForPassport($login)
     {
@@ -43,5 +46,13 @@ class User extends Authenticatable
     public function validateForPassportPasswordGrant($password)
     {
         return Hash::check($password, $this->password);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function articles() {
+
+        return $this->hasMany('App\Entities\Blog\Article');
     }
 }

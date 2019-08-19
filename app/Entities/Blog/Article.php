@@ -2,11 +2,10 @@
 
 namespace App\Entities\Blog;
 
+use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use Jenssegers\Mongodb\Eloquent\Model;
-//use Prettus\Repository\Contracts\Transformable;
-//use Prettus\Repository\Traits\TransformableTrait;
+//use MongoDB\Collection as MongoCollection;
 
-use MongoDB\Collection as MongoCollection;
 /**
  * Class Article.
  *
@@ -14,11 +13,28 @@ use MongoDB\Collection as MongoCollection;
  */
 class Article extends Model
 {
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = ['title', 'article_content'];
+
+    protected $dates = [];
+
+    public $timestamps = false;
+
+    protected $casts = [
+        'user_id' => 'string',
+    ];
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Entities\User');
+    }
 
 }

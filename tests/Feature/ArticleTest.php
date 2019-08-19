@@ -120,6 +120,7 @@ class ArticleTest extends TestCase
         $article = [
             'title' => $this->faker->title,
             'article_content' => $this->faker->paragraph(3)
+
         ];
 
         //Action
@@ -215,7 +216,7 @@ class ArticleTest extends TestCase
             ->assertStatus(200)
             ->assertJsonFragment(json_decode(json_encode($article), true))
             ->assertJsonStructure(
-                ['code', 'message', 'result' => ['_id', 'title', 'article_content', 'created_at', 'updated_at']]
+                ['code', 'message', 'result' => ['_id', 'title', 'article_content', 'author', 'created_at', 'updated_at']]
             );
     }
 }

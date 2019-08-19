@@ -5,7 +5,6 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Entities\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Arr;
 
 /**

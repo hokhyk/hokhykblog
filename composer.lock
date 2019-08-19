@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "441257c434b16969096c85382a07985d",
+    "content-hash": "82d914e51d2d0c273a541844005b52f5",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -5502,6 +5502,58 @@
                 "testing"
             ],
             "time": "2019-08-07T15:01:07+00:00"
+        },
+        {
+            "name": "mpociot/laravel-test-factory-helper",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mpociot/laravel-test-factory-helper.git",
+                "reference": "28f6f54a244c9494c83b82f14130168db6469787"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mpociot/laravel-test-factory-helper/zipball/28f6f54a244c9494c83b82f14130168db6469787",
+                "reference": "28f6f54a244c9494c83b82f14130168db6469787",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "doctrine/dbal": "~2.3",
+                "illuminate/console": "^5.5",
+                "illuminate/filesystem": "^5.5",
+                "illuminate/support": "^5.5",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mpociot\\LaravelTestFactoryHelper\\TestFactoryHelperServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mpociot\\LaravelTestFactoryHelper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Generate Laravel test factories from your existing models",
+            "keywords": [
+                "factory",
+                "laravel",
+                "tests"
+            ],
+            "time": "2019-07-28T20:12:21+00:00"
         },
         {
             "name": "myclabs/deep-copy",
