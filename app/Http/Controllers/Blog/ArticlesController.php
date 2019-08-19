@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Blog;
 
+use App\Http\Resources\ArticlesResource;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -127,7 +128,7 @@ class ArticlesController extends BaseController
             $response = [
                 'code'    => Response::HTTP_OK,
                 'message' => 'Article found.',
-                'result'  => $article,
+                'result'  => new ArticlesResource($article),
             ];
 
             if (request()->wantsJson()) {
