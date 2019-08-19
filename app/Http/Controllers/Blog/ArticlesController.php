@@ -57,7 +57,7 @@ class ArticlesController extends BaseController
         $response = [
             'code' => Response::HTTP_OK,
             'message' => 'Articles retrived.',
-            'result'    => $Articles->toArray(),
+            'result'    => $Articles,
         ];
 
         if (request()->wantsJson()) {

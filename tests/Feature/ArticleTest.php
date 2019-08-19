@@ -93,10 +93,21 @@ class ArticleTest extends TestCase
         //Action
         $response = $this->json('GET', "/api/articles")
             ->assertStatus(200)
-            ->assertJson(
+            ->assertJsonStructure(
+                ['code', 'message', 'result' =>
+                    [
+                       ['_id', 'title', 'article_content', 'created_at', 'updated_at']
+                    ],
+                ]
+            )
+            ->assertJsonFragment(
                 [
-                    '0' => json_decode(json_encode($article1), true),
-                    '1' => json_decode(json_encode($article2), true)
+                    json_decode(json_encode($article1), true)
+                ]
+            )
+            ->assertJsonFragment(
+                [
+                    json_decode(json_encode($article2), true)
                 ]
             );
     }
