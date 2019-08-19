@@ -13,13 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
- Route::get('/manageusers', 'ManageUsersController@index')->name('showUsers');
 
- Route::get('/manageusers/{id}', 'ManageUsersController@show')->name('showUser');
+Route::apiResource('/manageusers', 'ManageUsersController');
 
- Route::post('/manageusers', 'ManageUsersController@store')->name('storeUser');
-
- Route::put('/manageusers/{id}', 'ManageUsersController@update')->name('updateUser');
-
- Route::delete('/manageusers/{id}', 'ManageUsersController@destroy')->name('deleteUser');
+Route::apiResource('/administrator', 'AdministratorsController');
 

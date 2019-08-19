@@ -49,4 +49,59 @@ class ArticleUserRelationTest extends TestCase
                 ]
             );
     }
+
+    /**
+     * @group testCanViewArticleWithAuthorName
+     */
+    public function testCanViewArticleWithAuthorName() {
+
+        //Arrangement
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create(
+            [
+                '_id' => $this->faker->uuid,
+                'name' => $this->faker->name,
+                'email' => $this->faker->unique()->safeEmail,
+                'phone' => $this->faker->unique()->phoneNumber,
+                'password' => $this->faker->password(),
+            ]
+        );
+
+        $article = factory(Article::class)->create(
+            [
+                '_id' => $this->faker->uuid,
+                'title' => $this->faker->title,
+                'article_content' => $this->faker->paragraph(1),
+                'user_id' => $user->_id,
+            ]
+        );
+
+        $returnedArticle = [
+                        '_id' => $article->_id,
+                      'title' => $article->title,
+            'article_content' => $article->article_content,
+                 'created_at' => $article->created_at,
+                 'updated_at' => $article->updated_at,
+                'author_info' => [
+                                      '_id' => $user->_id,
+                                'user_name' => $user->name,
+                ]
+        ];
+
+        //Action
+        $response = $this->json('GET', "/api/articles/{$article->_id}")->dump()
+            ->assertStatus(200)
+            ->assertJsonFragment(json_decode(json_encode($returnedArticle), true))
+            ->assertJsonStructure(
+                ['code', 'message', 'result' =>
+                    ['_id', 'title', 'article_content', 'author', 'created_at', 'updated_at',
+                        'author_info' => [
+                            '_id',
+                            'user_name'
+                        ]
+                    ]
+                ]
+            );
+    }
 }

@@ -18,16 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Blog'], function() {
-
-    Route::get('/articles', 'ArticlesController@index')->name('showArticles');
-
-    Route::get('/articles/{id}', 'ArticlesController@show')->name('showArticle');
-
-    Route::post('/articles', 'ArticlesController@store')->name('storeArticle');
-
-    Route::put('/articles/{id}', 'ArticlesController@update')->name('updateArticle');
-
-    Route::delete('/articles/{id}', 'ArticlesController@destroy')->name('deleteArticle');
+    Route::apiResource('/articles', 'ArticlesController');
 });
 
 

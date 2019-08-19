@@ -51,13 +51,13 @@ class ArticlesController extends BaseController
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
-        $Articles = $this->repository->all();
+        $articles = $this->repository->all();
 //        $articles = $this->repository->paginate($limit = null, $columns = ['*']);
 
         $response = [
             'code' => Response::HTTP_OK,
             'message' => 'Articles retrived.',
-            'result'    => $Articles,
+            'result'    => $articles,
         ];
 
         if (request()->wantsJson()) {
@@ -83,12 +83,12 @@ class ArticlesController extends BaseController
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-            $Article = $this->repository->create($request->all());
+            $article = $this->repository->create($request->all());
 
             $response = [
                 'code' => Response::HTTP_CREATED,
                 'message' => 'Article created.',
-                'result'    => $Article,
+                'result'    => $article,
             ];
 
             if ($request->wantsJson()) {
@@ -122,12 +122,12 @@ class ArticlesController extends BaseController
     {
         try {
 
-            $Article = $this->repository->find($id);
+            $article = $this->repository->with('user')->find($id);
 
             $response = [
                 'code'    => Response::HTTP_OK,
                 'message' => 'Article found.',
-                'result'  => $Article->toArray(),
+                'result'  => $article,
             ];
 
             if (request()->wantsJson()) {
@@ -167,12 +167,12 @@ class ArticlesController extends BaseController
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $Article = $this->repository->update($request->all(), $id);
+            $article = $this->repository->update($request->all(), $id);
 
             $response = [
                 'code' => Response::HTTP_OK,
                 'message' => 'Article updated.',
-                'result'    => $Article->toArray(),
+                'result'    => $article->toArray(),
             ];
 
             if ($request->wantsJson()) {
