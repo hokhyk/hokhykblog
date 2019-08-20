@@ -54,9 +54,6 @@ class ArticleRepositoryEloquent extends BaseRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
-
-        $this->pushCriteria(BaseArticlesRequestCriteria::class);
-
     }
     
 }

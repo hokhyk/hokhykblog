@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Criteria\BaseArticlesRequestCriteria;
 use App\Http\Resources\ArticlesResource;
 use App\Http\Resources\UserInfoResource;
 use App\Http\Resources\UsersCollection;
@@ -97,15 +98,12 @@ class UsersController extends BaseController
         }
     }
 
+
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  UserUpdateRequest $request
-     * @param  string            $id
-     *
-     * @return Response
-     *
-     * @throws \Prettus\Validator\Exceptions\ValidatorException
+     * @param UserUpdateRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function updateUserInfo(UserUpdateRequest $request, $id)
     {
@@ -114,7 +112,8 @@ class UsersController extends BaseController
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
             //For simplicity, just allow the user to update name,email,phone and password directly.
-            $User = $this->user_repository->update($request->all(), $id);
+
+            $User = $this->user_repository->pushCriteria(new BaseArticlesRequestCriteria($request))->update($request->all(), $id);
 
             $response = [
                 'code' => Response::HTTP_OK,
