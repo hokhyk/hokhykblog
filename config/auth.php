@@ -45,18 +45,10 @@ return [
             'driver' => 'passport',
             'provider' => 'users',
         ],
-        'api' => [
-            'driver' => 'passport',
-            'provider' => 'users',
-        ],
-        'api' => [
-            'driver' => 'passport',
-            'provider' => 'users',
-        ],
-        'admin_api' => [
-            'driver' => 'passport',
-            'provider' => 'admin_users',
-        ],
+//        'admin_api' => [
+//            'driver' => 'passport',
+//            'provider' => 'admin_users',
+//        ],
     ],
 
     /*
@@ -81,10 +73,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\Entities\User::class,
         ],
-        'admin_users' => [
-            'driver' => 'eloquent',
-            'model' => App\Entities\AdminUser::class
-        ],
+//        'admin_users' => [
+//            'driver' => 'eloquent',
+//            'model' => App\Entities\AdminUser::class
+//        ],
 
         // 'users' => [
         //     'driver' => 'database',

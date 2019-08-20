@@ -8,7 +8,8 @@ use App\Http\Controllers\Controller as BaseController;
 
 class UserAuthenticationController extends BaseController
 {
-    public  function Login() {
+    public  function Login(Request $request) {
+
 
     }
 

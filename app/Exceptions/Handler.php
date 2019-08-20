@@ -60,5 +60,6 @@ class Handler extends ExceptionHandler
 //        }
 
         return parent::render($request, $exception);
+//        return response()->json(['code' => $exception->getCode(), 'message' => $exception->cgetMessage()]);
     }
 }

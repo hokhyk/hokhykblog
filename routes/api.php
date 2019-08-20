@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 //  Blog module
-Route::group(['prefix' => 'api/blog', 'middleware' => ['api', ], 'namespace' => '\Blog'], function() {
+Route::group(['prefix' => 'blog', 'middleware' => ['api', ], 'namespace' => '\Blog'], function() {
 
     Route::get('/articles', 'ArticlesController@index')->name('articles.index');
 
@@ -38,21 +38,21 @@ Route::group(['prefix' => 'api/blog', 'middleware' => ['api', ], 'namespace' => 
 
 
 // User module
-Route::group(['prefix' => 'api/user', 'middleware' => ['api', ], 'namespace' => '\User'], function() {
+Route::group(['prefix' => 'users', 'middleware' => ['api', ], 'namespace' => '\User'], function() {
 
     // For Normal users to login.
     Route::post('/login', 'UserAuthenticationController@Login')->name('users.login');
     // TODO: register, reset password, unregister( if allowed...)
 
     // For Users to view  Author information.
-    Route::get('/users/{id}', 'UsersController@showUserInfo')->name('users.showUser');
+    Route::get('/{id}', 'UsersController@showUserInfo')->name('users.showUser');
 
 
     // For users to view an article's detail .
-    Route::get('/users/{user_id}/articles/{article_id}', 'UsersController@showOneArticle')->name('users.showOneUserArticle');
+    Route::get('/{user_id}/articles/{article_id}', 'UsersController@showOneArticle')->name('users.showOneUserArticle');
 
     // For users to view someone's articles.
-    Route::get('/users/{user_id}/articles', 'UsersController@showArticles')->name('users.showUserArticles');
+    Route::get('/{user_id}/articles', 'UsersController@showArticles')->name('users.showUserArticles');
 
 
     // The following endpoints should be protected  before successful authentication.
@@ -63,7 +63,7 @@ Route::group(['prefix' => 'api/user', 'middleware' => ['api', ], 'namespace' => 
 
 
         // For Users to  modify his own information.
-        Route::put('/users/{id}', 'UsersController@updateUserInfo')->name('users.updateUser');
+        Route::put('/{id}', 'UsersController@updateUserInfo')->name('users.updateUser');
 
     });
 });
@@ -74,7 +74,7 @@ Route::group(['prefix' => 'api/user', 'middleware' => ['api', ], 'namespace' => 
 
 
 // Administrator module
-Route::group(['prefix' => 'api/admin', 'middleware' => ['api', ], 'namespace' => '\Admin'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => ['api', ], 'namespace' => '\Admin'], function() {
 
     Route::post('/login', 'AdminAuthenticationController@adminLogin')->name('admin.login');
 
