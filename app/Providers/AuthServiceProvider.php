@@ -29,9 +29,9 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         //
-        Passport::tokensExpireIn(Carbon::now()->addDays(2));
+        Passport::tokensExpireIn(Carbon::now()->addDays(7));
 
-        Passport::refreshTokensExpireIn(Carbon::now()->addDays(4));
+        Passport::refreshTokensExpireIn(Carbon::now()->addDays(7));
 
         Passport::routes(function (RouteRegistrar $router) {
             //Only use password grant type routes
@@ -41,6 +41,12 @@ class AuthServiceProvider extends ServiceProvider
 //            $router->forTransientTokens();
 //            $router->forClients();
 //            $router->forPersonalAccessTokens();
+
+              // Customizing Models' used by Passport.
+//            Passport::useTokenModel(Token::class);
+//            Passport::useClientModel(Client::class);
+//            Passport::useAuthCodeModel(AuthCode::class);
+//            Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
         });
     }
 }
