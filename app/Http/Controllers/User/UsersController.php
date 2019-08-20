@@ -185,6 +185,7 @@ class UsersController extends BaseController
         try {
             // If with pagination limit in Request
             $limit = $request->get('limit') ? $request->get('limit') : 15;
+            $limit_mongo = (int)$limit;
 
             $articles_of_user = $this->article_repository->scopeQuery(function ($query) {
                     return $query->select([
@@ -196,7 +197,7 @@ class UsersController extends BaseController
                         $query->select(['_id', 'name', 'email']);
                     },])
                 ->orderBy('created_at', 'desc')
-                ->paginate($limit);
+                ->paginate($limit_mongo);
 
 
             $response = [

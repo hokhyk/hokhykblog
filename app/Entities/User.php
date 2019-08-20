@@ -11,6 +11,7 @@ class User extends Authenticatable
 {
     use SoftDeletes, Notifiable;
 
+    protected $password;
     /**
      * The attributes that are mass assignable.
      *
