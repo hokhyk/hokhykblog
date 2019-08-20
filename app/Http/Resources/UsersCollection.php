@@ -20,7 +20,10 @@ class UsersCollection extends JsonResource
             'email' => $this->email,
             'created_at' => (string)$this->created_at,
             'updated_at' => (string)$this->updated_at,
-            'article_info' => ArticlesResource::collection($this->whenLoaded('articles'))
+            'articles' => ArticlesResource::collection($this->whenLoaded('articles'))
+
+            //TODO: to add pagination using Resource collection of with() method.
+//            'articles' => ArticlesCollection::collection($this->whenLoaded('articles'))
         ];
     }
 }

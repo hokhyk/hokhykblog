@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Resources\ArticlesResource;
 use App\Http\Resources\UserInfoResource;
 use App\Http\Resources\UsersCollection;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Requests\User\UserUpdateRequest;
 use App\Repositories\Eloquent\User\UserRepositoryEloquent as UserRepository;
+use App\Repositories\Eloquent\Blog\ArticleRepositoryEloquent as ArticleRepository;
 use App\Validators\User\UserValidator;
 use Illuminate\Http\Response;
 use Exception;
@@ -27,22 +29,31 @@ class UsersController extends BaseController
     /**
      * @var UserRepository
      */
-    protected $repository;
+    protected $user_repository;
+
+    /**
+     * @var ArticleRepository
+     */
+    protected $article_repository;
+
+
 
     /**
      * @var UserValidator
      */
     protected $validator;
 
+
     /**
      * UsersController constructor.
-     *
-     * @param UserRepository $repository
+     * @param UserRepository $user_repository
+     * @param ArticleRepository $article_repository
      * @param UserValidator $validator
      */
-    public function __construct(UserRepository $repository, UserValidator $validator)
+    public function __construct(UserRepository $user_repository, ArticleRepository $article_repository,  UserValidator $validator)
     {
-        $this->repository = $repository;
+        $this->user_repository = $user_repository;
+        $this->article_repository = $article_repository;
         $this->validator  = $validator;
     }
 
@@ -57,7 +68,7 @@ class UsersController extends BaseController
     {
         try {
 
-            $user = $this->repository->find($id);
+            $user = $this->user_repository->find($id);
 
             $response = [
                 'code'    => Response::HTTP_OK,
@@ -102,7 +113,8 @@ class UsersController extends BaseController
 
             $this->validator->with($request->all())->passesOrFail(ValidatorInterface::RULE_UPDATE);
 
-            $User = $this->repository->update($request->all(), $id);
+            //For simplicity, just allow the user to update name,email,phone and password directly.
+            $User = $this->user_repository->update($request->all(), $id);
 
             $response = [
                 'code' => Response::HTTP_OK,
@@ -132,11 +144,49 @@ class UsersController extends BaseController
     }
 
 
+    public function showOneArticle( $userid, $articleid)
+    {
+        try {
+
+            $article = $this->article_repository->find($articleid);
+
+            $response = [
+                'code'    => Response::HTTP_OK,
+                'message' => 'User articles list found.',
+                'result'  => new ArticlesResource($article),
+            ];
+
+            if (request()->wantsJson()) {
+
+                return response()->json($response);
+            }
+
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
+
+        } catch (ValidatorException $e) {
+
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                    'error'   => true,
+                    'message' => $e->getMessageBag()
+                ]);
+            }
+
+            return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
+        }
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function showArticles($id)
     {
         try {
 
-            $UserWithArticles = $this->repository->with('articles')->find($id);
+            //TODO:  pagination to be added.
+            $UserWithArticles = $this->article_repository->with('user')->find($id);
 
             $response = [
                 'code'    => Response::HTTP_OK,
