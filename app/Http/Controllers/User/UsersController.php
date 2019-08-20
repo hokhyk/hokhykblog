@@ -64,7 +64,7 @@ class UsersController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function showUserInfo($id)
     {
         try {
 
@@ -107,7 +107,7 @@ class UsersController extends BaseController
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
-    public function update(UserUpdateRequest $request, $id)
+    public function updateUserInfo(UserUpdateRequest $request, $id)
     {
         try {
 
@@ -181,17 +181,29 @@ class UsersController extends BaseController
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showArticles($id)
+    public function showArticles(Request $request, $userid)
     {
         try {
+            // If with pagination limit in Request
+            $limit = $request->get('limit') ? $request->get('limit') : 15;
 
-            //TODO:  pagination to be added.
-            $UserWithArticles = $this->article_repository->with('user')->find($id);
+            $articles_of_user = $this->article_repository->scopeQuery(function ($query) {
+                    return $query->select([
+                            '_id', 'title', 'article_content', 'user_id', 'updated_at', 'created_at'
+                        ]);
+                })
+                ->with([
+                    'user' => function ($query) {
+                        $query->select(['_id', 'name', 'email']);
+                    },])
+                ->orderBy('created_at', 'desc')
+                ->paginate($limit);
+
 
             $response = [
                 'code'    => Response::HTTP_OK,
                 'message' => 'User articles list found.',
-                'result'  => new UsersCollection($UserWithArticles),
+                'result'  => new UsersCollection($articles_of_user),
             ];
 
             if (request()->wantsJson()) {

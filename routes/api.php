@@ -25,9 +25,9 @@ Route::group(['namespace' => 'Blog'], function() {
 Route::group(['namespace' => 'User'], function() {
 
     // For Users to view or modify his own information.
-    Route::get('/users/{id}', 'UsersController@show')->name('showUser');
+    Route::get('/users/{id}', 'UsersController@showUserInfo')->name('showUser');
 
-    Route::put('/users/{id}', 'UsersController@update')->name('updateUser');
+    Route::put('/users/{id}', 'UsersController@updateUserInfo')->name('updateUser');
 
 
 
@@ -35,7 +35,7 @@ Route::group(['namespace' => 'User'], function() {
     Route::get('/users/{user_id}/articles/{article_id}', 'UsersController@showOneArticle')->name('showOneUserArticle');
 
     // For users to view someone's articles.
-    Route::get('/articles', 'UsersController@showArticles')->name('showUserArticles');
+    Route::get('/users/{user_id}/articles', 'UsersController@showArticles')->name('showUserArticles');
 
 
 });

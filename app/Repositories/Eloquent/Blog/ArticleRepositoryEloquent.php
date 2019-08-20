@@ -6,6 +6,7 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Entities\Blog\Article;
 use App\Validators\Blog\ArticleValidator;
+use App\Criteria\BaseArticlesRequestCriteria;
 
 /**
  * Class ArticleRepositoryEloquent.
@@ -14,6 +15,17 @@ use App\Validators\Blog\ArticleValidator;
  */
 class ArticleRepositoryEloquent extends BaseRepository
 {
+    /**
+     * @var array
+     */
+    protected $fieldSearchable = [
+        'title',
+        'article_content',
+        'user_id',
+        'created_at',
+        'updated_at'
+    ];
+
     /**
      * Specify Model class name
      *
@@ -42,6 +54,9 @@ class ArticleRepositoryEloquent extends BaseRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+
+        $this->pushCriteria(BaseArticlesRequestCriteria::class);
+
     }
     
 }
