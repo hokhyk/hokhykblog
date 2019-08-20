@@ -13,5 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
+// For all users to see Blog in the system.
+
+//    Route::apiResource('/articles', 'ArticlesController')->except(['articles.store', 'articles.update', 'articles.destroy']);
+
+
+//    // Allow authors and administrators to create or update articles.
+Route::group(['middleware' => 'auth:api'], function() {
+
+    Route::apiResource('/articles', 'ArticlesController')->except(['articles.index', 'articles.show']);
+});
+
 
 

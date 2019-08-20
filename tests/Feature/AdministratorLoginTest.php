@@ -13,5 +13,7 @@ class UserLoginTest extends TestCase
     use withFaker;
 
 
-    function
+    function testAdminUserCanLogin() {
+
+    }
 }
