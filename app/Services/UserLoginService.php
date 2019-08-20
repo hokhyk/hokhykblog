@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Requests\User\UserLoginRequest;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 
 class UserLoginService
 {
@@ -35,40 +36,39 @@ class UserLoginService
         return Hash::check($password, $this->password);
     }
 
-    public function authenticateUser( string $login, string $password )  {
+    public function authenticateUser( $credentials ) {
         try {
-            $user = $this->userInstance->findForPassport($login);
+            $user = $this->userInstance->findForPassport($credentials[0]);
 
-            return Hash::check($password, $user->password);;
+            return Hash::check($credentials[1], $user->password);
     }
     catch (Exception $e) {
             return false;
         }
     }
 
-
-
-    public function login(UserLoginRequest $request) {
-
-        $login = $request->get('name') ?: $request->get('phone') ?: $request->get('email') ?: null;
-
-        if( $login ) {
-
-            return $this->authenticateUser($login, $request->get('password'));
-        }
-        return false;
-    }
-
-    public function getPassportAuthToken(UserLoginRequest $request) {
+    public function getPassportAuthToken($crentials) {
 
         try {
-            $request->request;
+            $authFullApiUrl = Config::get('app.token_url') . '/oauth/token';
 
-            $agent = Request::create('POST', request()->root() . '/oauth/token', [
-                'form_params' => config('passport') + $request->only(array_keys($request->rules()))
+            $headers = ['HTTP_ACCEPT' => 'application/json'];
+
+            $data = array_merge(Config::get('passport'), [
+                'username' => $crentials[0],
+                'password' => $crentials[1],
+                'scope'         => '*'
             ]);
 
-           return Route::dispatch($agent);
+            // Create and handle the oauth request
+            $request = Request::create($authFullApiUrl, 'POST', $data, [], [], $headers);
+
+            $response = App::handle($request);
+
+            // response content as Array
+            $content = \GuzzleHttp\json_decode($response->getContent(), true);
+
+           return ['request' => $request, 'config'=> config('passport'), '$response' => $response];
         }
         catch (Exception $e) {
 
