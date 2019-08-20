@@ -202,7 +202,8 @@ class UsersController extends BaseController
             $response = [
                 'code'    => Response::HTTP_OK,
                 'message' => 'User articles list found.',
-                'result'  => new UsersCollection($articles_of_user),
+//                'result'  => new UsersCollection($articles_of_user),
+                'result'  => $articles_of_user,
             ];
 
             if (request()->wantsJson()) {

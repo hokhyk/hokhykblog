@@ -88,7 +88,7 @@ class ArticleTest extends TestCase
         $article2 = factory(Article::class)->create();
 
         //Action
-        $response = $this->json('GET', "/api/articles")
+        $response = $this->json('GET', "/api/articles")->dump()
             ->assertStatus(200)
             ->assertJsonStructure(
                 ['code', 'message', 'result' =>
