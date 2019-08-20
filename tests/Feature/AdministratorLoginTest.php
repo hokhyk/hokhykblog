@@ -8,6 +8,8 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Entities\AdminUser;
+use Illuminate\Support\Facades\Hash;
+
 
 
 class AdminUserLoginTest extends TestCase
@@ -30,7 +32,15 @@ class AdminUserLoginTest extends TestCase
             'password' => $this->faker->password(),
         ];
 
-        $user = factory(User::class)->create($userinfo);
+        $admin = [
+            'name' => 'hok',
+            'email' => 'hokhyk@aliyun.com',
+            'phone' => '0064211583830',
+            'password' => Hash::make('9900ii'),
+        ];
+
+        $user = factory(User::class)->create($admin);
+        $token = '';
 
         //Action
         $response = $this->json('POST', '/api/users/login',

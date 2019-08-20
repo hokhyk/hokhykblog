@@ -2,7 +2,6 @@
 
 namespace App\Entities;
 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use DesignMyNight\Mongodb\Auth\User as Authenticatable;
@@ -27,7 +26,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+//        'password',
+        'remember_token',
     ];
 
     protected $dates = ['deleted_at', 'updated_at', 'created_at'];
@@ -35,18 +35,9 @@ class User extends Authenticatable
 
     public function findForPassport($login)
     {
-        return $this->orWhere('name', $login)->orWhere('email', $login)->orWhere('phone', $login)->first();
-    }
+         $result =$this->orWhere('name', $login)->orWhere('email', $login)->orWhere('phone', $login)->first();
 
-    /**
-     * Validate the password of the user for the Passport password grant.
-     *
-     * @param  string $password
-     * @return bool
-     */
-    public function validateForPassportPasswordGrant($password)
-    {
-        return Hash::check($password, $this->password);
+        return $result;
     }
 
     /**

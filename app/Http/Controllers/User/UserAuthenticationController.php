@@ -40,9 +40,9 @@ class UserAuthenticationController extends BaseController
 
     public function Login(UserLoginRequest $request) {
         try{
-            $this->userLoginService->login($request);
+            $commonAuth = $this->userLoginService->login($request);
 
-             return response()->json($this->userLoginService->getPassportAuthToken($request));
+             return response()->json(['code' => '1', 'commonAuth' => $commonAuth, 'token' => $this->userLoginService->getPassportAuthToken($request)]);
         }
         catch (Exception $e) {
             return response()->json([

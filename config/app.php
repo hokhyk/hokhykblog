@@ -166,6 +166,8 @@ return [
         DesignMyNight\Mongodb\MongodbPassportServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
+        App\Providers\UserServiceProvider::class,
+
     ],
 
     /*
@@ -214,6 +216,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+
+        'LoginService' => App\Services\UserLoginService::class,
 
     ],
 
