@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Resources\UsersResource;
+use App\Http\Resources\UserInfoResource;
+use App\Http\Resources\UsersCollection;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -135,12 +136,12 @@ class UsersController extends BaseController
     {
         try {
 
-            $UserArticles = $this->repository->with('articles')->find($id);
+            $UserWithArticles = $this->repository->with('articles')->find($id);
 
             $response = [
                 'code'    => Response::HTTP_OK,
                 'message' => 'User articles list found.',
-                'result'  => UsersResource::collection($User),
+                'result'  => new UsersCollection($UserWithArticles),
             ];
 
             if (request()->wantsJson()) {

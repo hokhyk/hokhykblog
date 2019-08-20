@@ -36,15 +36,16 @@ class UserArticleRelationTest extends TestCase
                 '_id' => $this->faker->uuid,
                 'title' => $this->faker->title,
                 'article_content' => $this->faker->paragraph(1),
-                'user_id' => $user->_id,
-            ],
-            5
+//                'user_id' => $user->_id,
+                'user_id' => '1b816700-27d2-3ecc-99e6-488eafc4c3ea',
+            ]
         );
         //TODO: to be done later... Fatigue is on...
 //        $returnedArticles = ?;
 
         //Action
-        $response = $this->json('GET', "/api/users/{$user->_id}/articles")->dump()
+//        $response = $this->json('GET', "/api/users/{$user->_id}/articles")->dump()
+        $response = $this->json('GET', "/api/users/1b816700-27d2-3ecc-99e6-488eafc4c3ea/articles")->dump()
             ->assertStatus(200)
 //            ->assertJsonFragment(json_decode(json_encode($returnedArticles), true))
             ->assertJsonStructure(
