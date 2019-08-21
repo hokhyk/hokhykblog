@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.6.39 on 2019-08-19 10:04:20.
+ * Generated for Laravel 5.6.39 on 2019-08-21 01:44:51.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -13871,6 +13871,18 @@ namespace Illuminate\Support\Facades {
  
 }
 
+namespace App\Services { 
+
+    /**
+     * 
+     *
+     */ 
+    class UserLoginService {
+         
+    }
+ 
+}
+
 namespace DesignMyNight\Mongodb\Passport { 
 
     /**
@@ -16422,6 +16434,8 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
 
     class View extends \Illuminate\Support\Facades\View {}
+
+    class LoginService extends \App\Services\UserLoginService {}
  
 }
 
