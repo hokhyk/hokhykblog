@@ -26,18 +26,6 @@ class UserLoginService
     }
 
 
-
-    /**
-     * Validate the password of the user for the Passport password grant.
-     *
-     * @param  string $password
-     * @return bool
-     */
-    public function validateForPassportPasswordGrant($password, $hashed_password)
-    {
-        return Hash::check($password, $this->password);
-    }
-
     public function authenticateUser( $credentials ) {
         try {
             $user = $this->userInstance->findForPassport($credentials[0]);

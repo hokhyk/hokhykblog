@@ -40,6 +40,12 @@ class User extends Authenticatable
         return $result;
     }
 
+
+    public function validateForPassportPasswordGrant($password)
+    {
+        return Hash::check($password, $this->password);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

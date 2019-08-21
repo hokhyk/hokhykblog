@@ -52,7 +52,7 @@ class UserAuthenticationController extends BaseController
 
             $commonAuth = $this->userLoginService->authenticateUser($credentials);
 
-             return response()->json(['$credentials'=>$credentials[0], 'code' => '1', 'commonAuth' => $commonAuth, 'token' => $this->userLoginService->getPassportAuthToken($credentials)]);
+             return response()->json(['$credentials'=>$credentials[0], 'code' => '1', 'token' => $this->userLoginService->getPassportAuthToken($credentials)]);
         }
         catch (Exception $e) {
             return response()->json([
