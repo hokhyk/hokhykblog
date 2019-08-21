@@ -71,15 +71,9 @@ class UserLoginService
 
             $response = $client->request('POST',$authFullApiUrl, $data, $headers);
 
-            if ($response->getStatusCode() == 401) {
-                throw  new UnauthorizedHttpException('', '账号验证失败');
-            }
-//            return response()->json($response->getBody()->getContents());
+//            return ['request' => $data, '$authFullApiUrl'=> $authFullApiUrl, '$response' => $response];
 
-            // response content as Array
-//            $content = \GuzzleHttp\json_decode($response->getContent(), true);
-
-           return ['request' => $response, 'config'=> config('passport'), '$response' => $response];
+            return response()->json($response->getBody()->getContents());
         }
         catch (Exception $e) {
 
