@@ -12,5 +12,3 @@
    Not making rapid progress, quite a lot of new stuff to learn and practice.
    Keep on watching, sooner or later I will finish it.
    
-
-

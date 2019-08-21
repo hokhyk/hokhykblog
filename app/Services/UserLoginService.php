@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 
+use GuzzleHttp\Client;
+
 class UserLoginService
 {
     /**
@@ -61,14 +63,23 @@ class UserLoginService
             ]);
 
             // Create and handle the oauth request
-            $request = Request::create($authFullApiUrl, 'POST', $data, [], [], $headers);
+//            $request = Request::create($authFullApiUrl, 'POST', $data, [], [], $headers);
+//
+//            $response = App::handle($request);
 
-            $response = App::handle($request);
+            $client = new Client();
+
+            $response = $client->request('POST',$authFullApiUrl, $data, $headers);
+
+            if ($response->getStatusCode() == 401) {
+                throw  new UnauthorizedHttpException('', '账号验证失败');
+            }
+//            return response()->json($response->getBody()->getContents());
 
             // response content as Array
-            $content = \GuzzleHttp\json_decode($response->getContent(), true);
+//            $content = \GuzzleHttp\json_decode($response->getContent(), true);
 
-           return ['request' => $request, 'config'=> config('passport'), '$response' => $response];
+           return ['request' => $response, 'config'=> config('passport'), '$response' => $response];
         }
         catch (Exception $e) {
 
