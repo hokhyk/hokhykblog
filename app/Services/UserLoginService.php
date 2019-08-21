@@ -44,11 +44,11 @@ class UserLoginService
 
             $headers = ['HTTP_ACCEPT' => 'application/json'];
 
-            $data = array_merge(Config::get('passport'), [
+            $data = ['form_params' => array_merge(Config::get('passport'), [
                 'username' => $crentials[0],
                 'password' => $crentials[1],
                 'scope'         => '*'
-            ]);
+            ])];
 
             // Create and handle the oauth request
 //            $request = Request::create($authFullApiUrl, 'POST', $data, [], [], $headers);

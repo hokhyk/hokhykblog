@@ -53,7 +53,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-    'token_url' => env('Token_URL', 'http://172.20.0.3'),
+    'token_url' => env('Token_URL', 'http://172.21.0.6'),
 //    'token_url' => env('Token_URL', 'http://hokhykblog.test'),
 
     /*
