@@ -45,8 +45,10 @@ class UserLoginService
             $headers = ['HTTP_ACCEPT' => 'application/json'];
 
             $data = ['form_params' => array_merge(Config::get('passport'), [
-                'username' => $crentials[0],
-                'password' => $crentials[1],
+//                'username' => $crentials[0],
+                'username' => 'hokhyk@aliyun.com',
+//                'password' => $crentials[1],
+                'password' => '9900ii',
                 'scope'         => '*'
             ])];
 
@@ -65,11 +67,12 @@ class UserLoginService
         }
         catch (Exception $e) {
 
-            return [
-                'code' => $e->getCode(),
-                'error' => 'true',
-                'message' => $e->getMessage()
-            ];
+//            return [
+//                'code' => $e->getCode(),
+//                'error' => 'true',
+//                'message' => $e->getMessage()
+//            ];
+            throw new Exception($e->getMessage());
         }
     }
 }
