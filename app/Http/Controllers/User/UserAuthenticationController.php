@@ -43,16 +43,20 @@ class UserAuthenticationController extends BaseController
 
         $password = $request->get('password');
 
-        return  [$login, $password];
+        return  ['login' => $login, 'password' => $password];
     }
 
     public function Login(UserLoginRequest $request) {
         try{
             $credentials = $this->getCredential($request);
 
-            $commonAuth = $this->userLoginService->authenticateUser($credentials);
+            $customizedAuthforPassport = $this->userLoginService->authenticateUser($credentials);
 
-             return response()->json(['$credentials'=>$credentials[0], 'code' => '1', 'token' => $this->userLoginService->getPassportAuthToken($credentials)]);
+            if($customizedAuthforPassport) {
+                return response()->json(['login'=>$credentials['login'], 'password'=>$credentials['password'], '$customizedAuthforPassport' => $customizedAuthforPassport, 'code' => '200',
+                    'token' => $this->userLoginService->getPassportAuthToken($credentials)
+                ]);
+            }
         }
         catch (Exception $e) {
             return response()->json([

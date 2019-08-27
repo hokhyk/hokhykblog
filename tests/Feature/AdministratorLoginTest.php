@@ -25,30 +25,31 @@ class AdminUserLoginTest extends TestCase
         //Arrangement
         $this->withoutExceptionHandling();
 
+//        $userinfo = [
+//            'name' => $this->faker->name,
+//            'email' => $this->faker->unique()->safeEmail,
+//            'phone' => $this->faker->unique()->phoneNumber,
+//            'password' => $this->faker->password(),
+//        ];
+
         $userinfo = [
-            'name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
-            'phone' => $this->faker->unique()->phoneNumber,
-            'password' => $this->faker->password(),
+            'name' => 'ggg',
+            'email' => 'ggg@aliyun.com',
+            'phone' => '0064999',
+//            'password' => Hash::make('9900ii'),
+            'password' => bcrypt('9900ii'),
+//            'password' => '9900ii',
         ];
 
-        $admin = [
-            'name' => 'hok',
-            'email' => 'hokhyk@aliyun.com',
-            'phone' => '0064211583830',
-            'password' => Hash::make('9900ii'),
-        ];
-
-        $user = factory(User::class)->create($admin);
+        $user = factory(User::class)->create($userinfo);
         $token = '';
 
         //Action
         $response = $this->json('POST', '/api/users/login',
             [
                 'name' => $userinfo['name'],
-//                'email' => $userinfo['email'],
-//                'email' => '999',
-//                'phone' => $userinfo['phone'],
+                'email' => $userinfo['email'],
+                'phone' => $userinfo['phone'],
                 'password' => $userinfo['password'],
             ])->assertStatus(200)
             ->assertJsonStructure(

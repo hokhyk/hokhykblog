@@ -28,9 +28,9 @@ class UserLoginService
 
     public function authenticateUser( $credentials ) {
         try {
-            $user = $this->userInstance->findForPassport($credentials[0]);
+            $user = $this->userInstance->findForPassport($credentials['login']);
 
-            return Hash::check($credentials[1], $user->password);
+            return Hash::check($credentials['password'], $user->password);
     }
     catch (Exception $e) {
             return false;
@@ -42,13 +42,13 @@ class UserLoginService
         try {
             $authFullApiUrl = Config::get('app.token_url') . '/oauth/token';
 
-            $headers = ['HTTP_ACCEPT' => 'application/json'];
+//            $headers = ['HTTP_ACCEPT' => 'application/json'];
 
             $data = ['form_params' => array_merge(Config::get('passport'), [
-//                'username' => $crentials[0],
-                'username' => 'hokhyk@aliyun.com',
-//                'password' => $crentials[1],
-                'password' => '9900ii',
+                'username' => $crentials['login'],
+//                'username' => 'hokhyk@aliyun.com',
+                'password' => $crentials['password'],
+//                'password' => '9900ii',
                 'scope'         => '*'
             ])];
 
@@ -57,9 +57,10 @@ class UserLoginService
 //
 //            $response = App::handle($request);
 
-            $client = new Client();
+            $guzzle = new Client();
 
-            $response = $client->request('POST',$authFullApiUrl, $data, $headers);
+//            $response = $guzzle->request('POST',$authFullApiUrl, $data, $headers);
+            $response = $guzzle->post($authFullApiUrl, $data);
 
 //            return ['request' => $data, '$authFullApiUrl'=> $authFullApiUrl, '$response' => $response];
 

@@ -41,10 +41,9 @@ class User extends Authenticatable
         return $result;
     }
 
-
     public function validateForPassportPasswordGrant($password)
     {
-        return Hash::check($password, $this->password);
+        return true; //hacking to return true for passport user credential validation as it is already validated before passport's own user login credential validation.
     }
 
     /**
