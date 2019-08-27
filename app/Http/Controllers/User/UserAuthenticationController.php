@@ -67,12 +67,14 @@ class UserAuthenticationController extends BaseController
         }
     }
 
-    public  function Logout() {
-//
+    public  function Logout(Request $request) {
+
 //        if (Auth::guard('api')->check()) {
 //            Auth::guard('api')->user()->token()->delete();
 //        }
-//
-//        return response()->json(['message' => '登出成功', 'status_code' => 200, 'data' => null]);
+
+        $token = $request->user()->token()->revoke();
+
+        return response()->json(['message' => 'Successfully logged out!', 'status_code' => 200, 'data' => null]);
     }
 }
