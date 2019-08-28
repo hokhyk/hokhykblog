@@ -17,7 +17,7 @@ class AdministratorLogoutTest extends TestCase
 
 
     /**
-     * @group AdminUserLogin
+     * @group AdminUserLogout
      */
     function testAdminUserCanLogout()
     {
@@ -25,44 +25,40 @@ class AdministratorLogoutTest extends TestCase
         //Arrangement
         $this->withoutExceptionHandling();
 
-//        $userinfo = [
-//            'name' => $this->faker->name,
-//            'email' => $this->faker->unique()->safeEmail,
-//            'phone' => $this->faker->unique()->phoneNumber,
-//            'password' => $this->faker->password(),
-//        ];
-
         $userinfo = [
-            'name' => 'ggg',
-            'email' => 'ggg@aliyun.com',
-            'phone' => '0064999',
-//            'password' => Hash::make('9900ii'),
-            'password' => bcrypt('9900ii'),
-//            'password' => '9900ii',
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'phone' => $this->faker->unique()->phoneNumber,
+            'password' => $this->faker->password(),
         ];
 
         $user = factory(User::class)->create($userinfo);
-        $token = '';
+
+        $accessToken = '';
+        $headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '.$accessToken,
+        ];
 
         //Action
         $response = $this->json('POST', '/api/users/login',
             [
                 'name' => $userinfo['name'],
-                'email' => $userinfo['email'],
-                'phone' => $userinfo['phone'],
+//                'email' => $userinfo['email'],
+//                'phone' => $userinfo['phone'],
                 'password' => $userinfo['password'],
             ])->assertStatus(200)
             ->assertJsonStructure(
                 ['code', 'message', 'result' =>
-                    ['access_token', 'refresh_token',]
+                    ['token_type', 'expires_in', 'access_token', 'refresh_token',]
                 ]
-            )
-            ->assertJsonFragment($token);
+            );
 
-        //assert database records
-        $this->assertDatabaseHas('users',
-            $user
-        );
+        $logout_response = $this->json('POST', '/api/users/logout', [], $headers)
+            ->assertJson([
+                'code' => '200',
+                'message' => 'Log out successfully.',
+            ]);
     }
 }
 

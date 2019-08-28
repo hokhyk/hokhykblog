@@ -53,8 +53,10 @@ class UserAuthenticationController extends BaseController
             $customizedAuthforPassport = $this->userLoginService->authenticateUser($credentials);
 
             if($customizedAuthforPassport) {
-                return response()->json(['code' => '200',
-                    'token' => $this->userLoginService->getPassportAuthToken($credentials)
+                return response()->json([
+                    'code' => '200',
+                    'message' => 'Login successfully',
+                    'result' => $this->userLoginService->getPassportAuthToken($credentials)
                 ]);
             }
         }
