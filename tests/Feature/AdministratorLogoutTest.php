@@ -25,11 +25,12 @@ class AdministratorLogoutTest extends TestCase
         //Arrangement
         $this->withoutExceptionHandling();
 
+        $password =$this->faker->password();
         $userinfo = [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'phone' => $this->faker->unique()->phoneNumber,
-            'password' => $this->faker->password(),
+            'password' => Hash::make($password),
         ];
 
         $user = factory(User::class)->create($userinfo);
@@ -39,8 +40,8 @@ class AdministratorLogoutTest extends TestCase
                 'name' => $userinfo['name'],
 //                'email' => $userinfo['email'],
 //                'phone' => $userinfo['phone'],
-                'password' => $userinfo['password'],
-            ])->dump()
+                'password' => $password,
+            ])
             ->assertStatus(200)
             ->assertJsonStructure(
                 ['code', 'message', 'result' =>
