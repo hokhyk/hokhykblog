@@ -59,6 +59,13 @@ class UserAuthenticationController extends BaseController
                     'result' => $this->userLoginService->getPassportAuthToken($credentials)
                 ]);
             }
+            else {
+                return response()->json([
+                    'code' => '401',
+                    'message' => 'Login Unauthorized.',
+                    'result' => $customizedAuthforPassport,
+                ]);
+            }
         }
         catch (Exception $e) {
             return response()->json([

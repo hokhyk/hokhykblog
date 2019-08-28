@@ -34,26 +34,28 @@ class AdministratorLogoutTest extends TestCase
 
         $user = factory(User::class)->create($userinfo);
 
-        $accessToken = '';
-        $headers = [
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer '.$accessToken,
-        ];
-
-        //Action
         $response = $this->json('POST', '/api/users/login',
             [
                 'name' => $userinfo['name'],
 //                'email' => $userinfo['email'],
 //                'phone' => $userinfo['phone'],
                 'password' => $userinfo['password'],
-            ])->assertStatus(200)
+            ])->dump()
+            ->assertStatus(200)
             ->assertJsonStructure(
                 ['code', 'message', 'result' =>
                     ['token_type', 'expires_in', 'access_token', 'refresh_token',]
                 ]
             );
 
+        // set up the bearer token header.
+        $accessToken = $response->result->access_token;
+        $headers = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer '.$accessToken,
+        ];
+
+        //Action
         $logout_response = $this->json('POST', '/api/users/logout', [], $headers)
             ->assertJson([
                 'code' => '200',
