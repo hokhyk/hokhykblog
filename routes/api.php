@@ -41,7 +41,7 @@ Route::group(['prefix' => 'blog', 'middleware' => ['api', ], 'namespace' => '\Bl
 Route::group(['prefix' => 'users', 'middleware' => ['api', ], 'namespace' => '\User'], function() {
 
     // For Normal users to login.
-    Route::post('/login', 'UserAuthenticationController@Login')->name('users.login');
+    Route::post('/login', 'UserAuthenticationController@login')->name('users.login');
     // TODO: register, reset password, unregister( if allowed...)
 
     // For Users to view  Author information.
@@ -59,7 +59,7 @@ Route::group(['prefix' => 'users', 'middleware' => ['api', ], 'namespace' => '\U
     Route::group(['middleware' => 'auth:api'], function() {
 
         //    Logout
-        Route::delete('/logout', 'UserAuthenticationController@logout')->name('users.logout');
+        Route::post('/logout', 'UserAuthenticationController@logout')->name('users.logout');
 
 
         // For Users to  modify his own information.
@@ -83,7 +83,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['api', ], 'namespace' => '\A
     Route::group(['middleware' => 'auth:api'], function() {
 
         //    Logout
-        Route::delete('/logout', 'AdminAuthenticationController@adminLogout')->name('admin.logout');
+        Route::post('/logout', 'AdminAuthenticationController@adminLogout')->name('admin.logout');
 
         //TODO: For administrators to manage administrators in App\Entities\AdminUser Model.
         //  Hereby in this practise exercise They share the same model. Will be using multi-auth models/guards later.

@@ -46,7 +46,7 @@ class UserAuthenticationController extends BaseController
         return  ['login' => $login, 'password' => $password];
     }
 
-    public function Login(UserLoginRequest $request) {
+    public function login(UserLoginRequest $request) {
         try{
             $credentials = $this->getCredential($request);
 
@@ -76,13 +76,15 @@ class UserAuthenticationController extends BaseController
         }
     }
 
-    public  function Logout(Request $request) {
+    public  function logout(Request $request) {
 
 //        if (Auth::guard('api')->check()) {
 //            Auth::guard('api')->user()->token()->delete();
 //        }
 
-        $token = $request->user()->token()->revoke();
+        dd(Auth::guard('api'));
+        $token = Auth::guard('api')->user()->token()->revoke();
+
 
         return response()->json(['message' => 'Successfully logged out!', 'status_code' => 200, 'data' => null]);
     }

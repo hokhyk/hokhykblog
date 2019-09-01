@@ -50,7 +50,8 @@ class AdministratorLogoutTest extends TestCase
             );
 
         // set up the bearer token header.
-        $accessToken = $response->result->access_token;
+        $arr = json_decode($response->getContent(), true);
+        $accessToken = $arr['result']['access_token'];
         $headers = [
             'Accept' => 'application/json',
             'Authorization' => 'Bearer '.$accessToken,
