@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Requests\User\UserLoginRequest;
+use App\Http\Requests\User\UserLogoutRequest;
 use App\Http\Controllers\Controller as BaseController;
 use Prettus\Validator\Contracts\ValidatorInterface;
 use Prettus\Validator\Exceptions\ValidatorException;
@@ -76,14 +77,15 @@ class UserAuthenticationController extends BaseController
         }
     }
 
-    public  function logout(Request $request) {
+    public  function logout(UserLogoutRequest $request) {
 
 //        if (Auth::guard('api')->check()) {
 //            Auth::guard('api')->user()->token()->delete();
 //        }
+//        dd( Auth::guard('api')->user()->token()->revoked);
 
-        dd(Auth::guard('api'));
         $token = Auth::guard('api')->user()->token()->revoke();
+//        dd($token->revoked);
 
 
         return response()->json(['message' => 'Successfully logged out!', 'status_code' => 200, 'data' => null]);

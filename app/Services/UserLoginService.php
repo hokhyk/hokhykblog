@@ -11,10 +11,17 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 
+//use Illuminate\Foundation\Auth\AuthenticatesUsers;
+
 use GuzzleHttp\Client;
+
+use Auth;
+
 
 class UserLoginService
 {
+//    use AuthenticatesUsers;
+
     /**
      * @var User
      */

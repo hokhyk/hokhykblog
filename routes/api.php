@@ -61,7 +61,6 @@ Route::group(['prefix' => 'users', 'middleware' => ['api', ], 'namespace' => '\U
         //    Logout
         Route::post('/logout', 'UserAuthenticationController@logout')->name('users.logout');
 
-
         // For Users to  modify his own information.
         Route::put('/{id}', 'UsersController@updateUserInfo')->name('users.updateUser');
 
