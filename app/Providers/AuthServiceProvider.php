@@ -43,10 +43,18 @@ class AuthServiceProvider extends ServiceProvider
 //            $router->forPersonalAccessTokens();
 
               // Customizing Models' used by Passport.
-//            Passport::useTokenModel(Token::class);
+            Passport::useTokenModel(Token::class);
 //            Passport::useClientModel(Client::class);
 //            Passport::useAuthCodeModel(AuthCode::class);
 //            Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
         });
+
+        /**
+         * Register @see \App\Extensions\Illuminate\Auth\ExtendedUserProvider
+         */
+//        Auth::provider('extended', function ($app, $config) {
+//            $model = $config['model'];
+//            return new ExtendedUserProvider($app['hash'], $model);
+//        });
     }
 }
