@@ -13,6 +13,32 @@ use Illuminate\Http\Request;
 |
 */
 
+//  Voyager calculator API module
+// By default, middleware 'api' already has throttle:60,1 setup. here I just override it with 120,1 meaning 120 hits in 1 minute.
+Route::group(['prefix' => 'voyager/v1', 'middleware' => ['api', 'throttle:120,1'], 'namespace' => '\Voyager\V1'], function() {
+
+    Route::post('/add', 'AddController@add')->name('voyager.add');
+
+    Route::post('/sub', 'SubController@sub')->name('voyager.sub');
+
+    Route::post('/mul', 'MulController@mul')->name('voyager.mul');
+
+    Route::post('/div', 'DivController@div')->name('voyager.div');
+
+    // The following endpoints should be protected  before successful authentication.
+    Route::group(['middleware' => 'auth:api'], function() {
+
+        //Moving the route here under 'auth:api' will ensure api authentication.
+//        Route::post('/add', 'AddController@add')->name('voyager.add');
+//        Route::post('/sub', 'SubController@sub')->name('voyager.sub');
+//        Route::post('/mul', 'MulController@mul')->name('voyager.mul');
+//        Route::post('/div', 'DivController@div')->name('voyager.div');
+
+
+    });
+});
+
+
 //  Blog module
 Route::group(['prefix' => 'blog', 'middleware' => ['api', ], 'namespace' => '\Blog'], function() {
 

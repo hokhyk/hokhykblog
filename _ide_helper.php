@@ -16435,7 +16435,7 @@ namespace  {
 
     class View extends \Illuminate\Support\Facades\View {}
 
-    class LoginService extends \App\Services\UserLoginService {}
+    class LoginService extends \App\Services\IAddService {}
  
 }
 

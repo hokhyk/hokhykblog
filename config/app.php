@@ -169,6 +169,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
         App\Providers\UserServiceProvider::class,
+        App\Providers\VoyagerServiceProvider::class,
 
     ],
 
@@ -220,7 +221,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
 
-        'LoginService' => App\Services\UserLoginService::class,
+        'LoginService' => App\Services\IAddService::class,
 
     ],
 

@@ -6,28 +6,30 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ApiAddTest extends TestCase
+class ApiSubTest extends TestCase
 {
     use withFaker;
 
     /**
-     * @group testCanAddTwoNumbers
+     * @group testCanSubTwoNumbers
      */
-    public function testCanAddTwoNumbers() {
+    public function testCanSubTwoNumbers() {
         //Arrangement
         $this->withoutExceptionHandling();
 
         $payload = [
             'num1' => $this->faker()->randomFloat(),
+//            'num1' => 71217067.7950307000,
             'num2' => $this->faker()->randomFloat(),
+//            'num2' => 142434079.5170460000,
             ];
 
         //Action
-        $response = $this->post("/api/add", $payload)
+        $response = $this->json( 'POST', "/api/voyager/v1/sub", $payload)
             //Assertion
             ->assertStatus(200)
             ->assertJson(['code' => 200,
-                          'message' => 'Addition is successful.',
-                          'result' => bdadd($payload['num1'], $payload['num2'], 10)]);
+                          'message' => 'Subtraction is successful.',
+                          'result' => bcsub($payload['num1'], $payload['num2'], 10)]);
     }
 }

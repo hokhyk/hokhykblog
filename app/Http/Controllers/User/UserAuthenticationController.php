@@ -10,7 +10,7 @@ use Prettus\Validator\Exceptions\ValidatorException;
 use App\Repositories\Eloquent\User\UserRepositoryEloquent as UserRepository;
 use App\Validators\User\UserValidator;
 use Exception;
-use App\Services\UserLoginService;
+use App\Services\IAddService;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -28,7 +28,7 @@ class UserAuthenticationController extends BaseController
 
     protected $userLoginService;
 
-    public function __construct(UserRepository $user_repository, UserValidator $validator, UserLoginService $userLoginService)
+    public function __construct(UserRepository $user_repository, UserValidator $validator, IAddService $userLoginService)
     {
         $this->user_repository = $user_repository;
 
