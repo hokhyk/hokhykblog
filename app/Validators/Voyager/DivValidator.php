@@ -14,7 +14,7 @@ class DivValidator extends BaseValidator
 //            'num1' => 'required|numeric',
 ////            'num2' => 'required|numeric',
 //Todo:  Here should write a Laravel's customized validator for zoro divisor validation. Followed Jeffery's way but failed as here we're using \Prettus\Validator\LaravelValidator. It's different.
-// Need to use Validator::extend() method. Do it later.
+// Need to use Validator::extend() method to create a new validation rule. Do it later. At the moment I just injected a new validator into the controller for temporary implementation.
 //            'num2' => [new NoneZeroDivisorRule()],
 //    ];
 //
