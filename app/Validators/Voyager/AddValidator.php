@@ -3,27 +3,12 @@
 namespace App\Validators\Voyager;
 
 use \Prettus\Validator\LaravelValidator;
-
+use App\Validators\Voyager\BasicCalculationValidator as BaseValidator;
 /**
  * Class AddValidator
  * @package App\Validators\Voyager
  */
-class AddValidator extends LaravelValidator
+class AddValidator extends BaseValidator
 {
-    /**
-     * Validation Rules
-     *
-     * @var array
-     */
-    protected $rules = [
-            'num1' => 'required|numeric',
-            'num2' => 'required|numeric',
-    ];
-
-    protected $messages = [
-        'num1.required' => 'Num1 should not be empty.',
-        'num1.numeric' => 'Num1 should be numeric.',
-        'num2.required' => 'Num2 should not be empty.',
-        'num2.numeric' => 'Num2 should be numeric.',
-    ];
+    //May override specific rules here.
 }

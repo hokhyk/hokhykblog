@@ -18,8 +18,9 @@ class ApiAddTest extends TestCase
         $this->withoutExceptionHandling();
 
         $payload = [
-            'num1' => $this->faker()->randomFloat(),
+//            'num1' => $this->faker()->randomFloat(),
 //            'num1' => 71217067.7950307000,
+            'num1' => "abc",
             'num2' => $this->faker()->randomFloat(),
 //            'num2' => 142434079.5170460000,
             ];
