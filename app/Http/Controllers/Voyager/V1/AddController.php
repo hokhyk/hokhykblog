@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Voyager\V1;
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+use App\Http\Requests\Voyager\AddRequest;
 use \Prettus\Validator\Exceptions\ValidatorException;
 
 use App\Http\Controllers\Controller as BaseController;
@@ -17,29 +18,31 @@ use App\Validators\Voyager\AddValidator;
  */
 class AddController extends BaseController
 {
-    protected $validator;
+//    protected $validator;
     protected $addService;
+
 
     /**
      * AddController constructor.
      * @param AddValidator $validator
      * @param IAddService $addService
      */
-    public function __construct(AddValidator $validator, IAddService $addService)
+//    public function __construct(AddValidator $validator, IAddService $addService)
+    public function __construct(IAddService $addService)
     {
-        $this->validator  = $validator;
+//        $this->validator  = $validator;
+
         $this->addService  = $addService;
     }
 
     /**
-     * @param Request $request
+     * @param AddRequest $request
      * @return \Illuminate\Http\JsonResponse
-     * @throws ValidatorException
      */
-    public function add(Request $request)
+    public function add(AddRequest $request)
     {
         try {
-            $this->validator->with( $request->input())->passesOrFail();
+//            $this->validator->with( $request->input())->passesOrFail();
             $response = [
                 'code' => Response::HTTP_OK,
                 'message' => 'Addition is successful.',
@@ -54,8 +57,8 @@ class AddController extends BaseController
             return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
 
         }
-        catch (ValidatorException $e) {
-
+        catch (Exception $e) {
+            //Todo: May throw new exception here and create a centralized/singlton error handling service to deal with all exceptions.
             return response()->json([
                 'code'   =>Response::HTTP_BAD_REQUEST,
                 'message' =>$e->getMessage()

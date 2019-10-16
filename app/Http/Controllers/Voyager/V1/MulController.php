@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Voyager\V1;
 
+use App\Http\Requests\Voyager\MulRequest;
 use Illuminate\Http\Request;
 use \Prettus\Validator\Exceptions\ValidatorException;
 
@@ -17,7 +18,7 @@ use App\Validators\Voyager\MulValidator;
  */
 class MulController extends BaseController
 {
-    protected $validator;
+//    protected $validator;
     protected $mulService;
 
     /**
@@ -25,21 +26,21 @@ class MulController extends BaseController
      * @param MulValidator $validator
      * @param IMulService $mulService
      */
-    public function __construct(MulValidator $validator, IMulService $mulService)
+//    public function __construct(MulValidator $validator, IMulService $mulService)
+    public function __construct(IMulService $mulService)
     {
-        $this->validator  = $validator;
+//        $this->validator  = $validator;
         $this->mulService  = $mulService;
     }
 
     /**
-     * @param Request $request
+     * @param MulRequest $request
      * @return \Illuminate\Http\JsonResponse
-     * @throws ValidatorException
      */
-    public function mul(Request $request)
+    public function mul(MulRequest $request)
     {
         try {
-            $this->validator->with( $request->input())->passesOrFail();
+//            $this->validator->with( $request->input())->passesOrFail();
             $response = [
                 'code' => Response::HTTP_OK,
                 'message' => 'Multiplication is successful.',
@@ -54,7 +55,7 @@ class MulController extends BaseController
             return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
 
         }
-        catch (ValidatorException $e) {
+        catch (Exception $e) {
 
             return response()->json([
                 'code'   =>Response::HTTP_BAD_REQUEST,

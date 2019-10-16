@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Voyager\V1;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Voyager\SubRequest;
+//use Illuminate\Http\Request;
 use \Prettus\Validator\Exceptions\ValidatorException;
 
 use App\Http\Controllers\Controller as BaseController;
@@ -25,9 +26,10 @@ class SubController extends BaseController
      * @param SubValidator $validator
      * @param ISubService $subService
      */
-    public function __construct(SubValidator $validator, ISubService $subService)
+//    public function __construct(SubValidator $validator, ISubService $subService)
+    public function __construct(ISubService $subService)
     {
-        $this->validator  = $validator;
+//        $this->validator  = $validator;
         $this->subService  = $subService;
     }
 
@@ -36,10 +38,10 @@ class SubController extends BaseController
      * @return \Illuminate\Http\JsonResponse
      * @throws ValidatorException
      */
-    public function sub(Request $request)
+    public function sub(SubRequest $request)
     {
         try {
-            $this->validator->with( $request->input())->passesOrFail();
+//            $this->validator->with( $request->input())->passesOrFail();
             $response = [
                 'code' => Response::HTTP_OK,
                 'message' => 'Subtraction is successful.',
@@ -54,7 +56,7 @@ class SubController extends BaseController
             return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
 
         }
-        catch (ValidatorException $e) {
+        catch (Exception $e) {
 
             return response()->json([
                 'code'   =>Response::HTTP_BAD_REQUEST,

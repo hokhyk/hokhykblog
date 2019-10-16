@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Voyager\V1;
 
+use App\Http\Requests\Voyager\DivRequest;
 use Illuminate\Http\Request;
 use \Prettus\Validator\Exceptions\ValidatorException;
 
@@ -13,31 +14,31 @@ use App\Rules\NoneZeroDivisorRule;
 
 class DivController extends BaseController
 {
-    protected $validator;
+//    protected $validator;
 
-    protected $divisorValidator;
+//    protected $divisorValidator;
 
     protected $divService;
 
-    public function __construct(DivValidator $validator, NoneZeroDivisorRule $divisorValidator, IDivService $divService)
-    {
-        $this->validator  = $validator;
+//    public function __construct(DivValidator $validator, NoneZeroDivisorRule $divisorValidator, IDivService $divService)
+    public function __construct(IDivService $divService)
+            {
+//        $this->validator  = $validator;
 
-        $this->divisorValidator = $divisorValidator;
+//        $this->divisorValidator = $divisorValidator;
 
         $this->divService  = $divService;
     }
 
     /**
-     * @param Request $request
+     * @param DivRequest $request
      * @return \Illuminate\Http\JsonResponse
-     * @throws ValidatorException
      */
-    public function div(Request $request)
+    public function div(DivRequest $request)
     {
         try {
-            $this->validator->with($request->input())->passesOrFail();
-            $this->divisorValidator->passesOrFail($request->input('num2'));
+//            $this->validator->with($request->input())->passesOrFail();
+//            $this->divisorValidator->passesOrFail($request->input('num2'));
             $response = [
                 'code' => Response::HTTP_OK,
                 'message' => 'Division is successful.',
@@ -52,7 +53,7 @@ class DivController extends BaseController
             return response()->json(['code' => Response::HTTP_EXPECTATION_FAILED, 'message' => 'API returns JSON format only.']);
 
         }
-        catch (ValidatorException $e) {
+        catch (Exception $e) {
 
             return response()->json([
                 'code'   =>Response::HTTP_BAD_REQUEST,
