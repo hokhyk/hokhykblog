@@ -22,7 +22,7 @@ public function authorize() {
             // There're two ways to solve this problem.
             // 1. include required and numeric in the NoneZeroDivisorRule class. Not good, what if there are quite a lot of validation rules?
             // 2. Follow Laravel's traditional Validator::extend() method to define a rule separately and name it maybe 'zerodividor' and given the expression as 'num2' => 'required/numeric/zerodividor'.
-            'num2' => ['required|numeric', new NoneZeroDivisorRule()],
+            'num2' => 'required|numeric|ZeroDivisor',
 //            'num2' => new NoneZeroDivisorRule(),
         ];
     }

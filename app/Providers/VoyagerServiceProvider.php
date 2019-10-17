@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
-use App\Entities\User;
+//use App\Entities\User;
 use Illuminate\Support\ServiceProvider;
-use App\Services\Voyager\IDivService;
-use App\Services\Voyager\BCDivService;
+//use App\Services\Voyager\IDivService;
+//use App\Services\Voyager\BCDivService;
+use App\Rules\NoneZeroDivisorValidator;
+use \Illuminate\Support\Facades\Validator;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,12 @@ class VoyagerServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        Validator::resolver(
+            function($translator, $data, $rules, $messages)
+              {
+                  return new NoneZeroDivisorValidator($translator, $data, $rules, $messages);
+              }
+        );
     }
 
     /**
