@@ -15,11 +15,14 @@ use Illuminate\Support\Facades\Hash;
 */
 
 $factory->define(App\Entities\User::class, function (Faker $faker) {
+    static $password;
+
     return [
         '_id' => $faker->uuid,
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'phone' => $faker->unique()->phoneNumber,
-        'password' => Hash::make($faker->password()),
+//        'password' => Hash::make($faker->password()),
+        'password' => $password?:$password = bcrypt('pass'),
     ];
 });
